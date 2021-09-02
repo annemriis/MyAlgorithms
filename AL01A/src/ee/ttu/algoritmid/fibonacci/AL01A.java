@@ -1,5 +1,7 @@
 package ee.ttu.algoritmid.fibonacci;
 
+import java.math.BigInteger;
+
 public class AL01A {
 
     /**
@@ -11,12 +13,19 @@ public class AL01A {
         if (n == 0) {
             return "0";
         }
-        int a = 1, b = 1, c;
+        BigInteger a = BigInteger.valueOf(1);
+        BigInteger b = BigInteger.valueOf(1);
+        BigInteger c;
         for (int i = 3; i <= n; i++) {
-            c = a + b;
+            c = a.add(b);
             a = b;
             b = c;
         }
         return String.valueOf(b);
+    }
+
+    public static void main(String[] args) {
+        AL01A al01A = new AL01A();
+        System.out.println(al01A.iterativeF(28));
     }
 }
