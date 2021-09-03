@@ -23,9 +23,4 @@ public class AL01A {
         }
         return String.valueOf(b);
     }
-
-    public static void main(String[] args) {
-        AL01A al01A = new AL01A();
-        System.out.println(al01A.iterativeF(28));
-    }
 }
