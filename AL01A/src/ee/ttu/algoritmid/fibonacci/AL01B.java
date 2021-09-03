@@ -1,6 +1,8 @@
 package ee.ttu.algoritmid.fibonacci;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 
 public class AL01B {
 
@@ -12,9 +14,14 @@ public class AL01B {
     public String timeToComputeRecursiveFibonacci(int n) {
         BigInteger rows =  iterativeF(n).multiply(BigInteger.valueOf(3)).subtract(BigInteger.valueOf(2));
         BigInteger startTime = BigInteger.valueOf(System.nanoTime());
-        recursiveF(2);
+        System.out.println("Start time:");
+        System.out.println(startTime);
+        recursiveF(30);
         BigInteger endTime = BigInteger.valueOf(System.nanoTime());
-        return String.valueOf(rows.multiply(startTime.subtract(endTime)));
+        System.out.println("End time:");
+        System.out.println(endTime);
+        BigInteger oneRowTime = endTime.subtract(startTime).divide(BigInteger.valueOf(2496118));
+        return String.valueOf(nanosecondsToYears(oneRowTime.multiply(rows)));
     }
 
     /**
@@ -47,5 +54,20 @@ public class AL01B {
             b = c;
         }
         return b;
+    }
+
+    /**
+     * Calculate nanoseconds to years.
+     * @param nanoseconds BigInteger.
+     * @return years.
+     */
+    public BigDecimal nanosecondsToYears(BigInteger nanoseconds) {
+        BigDecimal seconds = new BigDecimal(nanoseconds).divide(BigDecimal.valueOf(Math.pow(10, 9)), 10, RoundingMode.HALF_UP);
+        return seconds.divide(BigDecimal.valueOf(31557600), 10, RoundingMode.HALF_UP);
+    }
+
+    public static void main(String[] args) {
+        AL01B al01B = new AL01B();
+        System.out.println(al01B.timeToComputeRecursiveFibonacci(50));
     }
 }
