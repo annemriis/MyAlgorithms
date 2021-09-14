@@ -16,16 +16,17 @@ public class GuessingGame {
      * @return the name of the fruit.
      */
     public String play(Fruit[] fruitArray) {
-        Fruit fruit = (Fruit) Arrays
+        Object[] sortedFruitArray = Arrays
                 .stream(fruitArray)
-                .sorted(Comparator.comparingInt(Fruit::getWeight)).toArray()[fruitArray.length / 2];
+                .sorted(Comparator.comparingInt(Fruit::getWeight)).toArray();
+        Fruit fruit = (Fruit) sortedFruitArray[fruitArray.length / 2];
         String fruitName = fruit.getName();
         String oracleAnswer = oracle.isIt(fruit);
         if (oracleAnswer.equals("correct!")) {
             return fruitName;
         } else if (oracleAnswer.equals("heavier")) {
-            return play(Arrays.copyOfRange(fruitArray, fruitArray.length / 2, fruitArray.length - 1));
+            return play(Arrays.copyOfRange(sortedFruitArray, fruitArray.length / 2 + 1, fruitArray.length, Fruit[].class));
         }
-        return play(Arrays.copyOfRange(fruitArray, 0, fruitArray.length / 2 - 1));
+        return play(Arrays.copyOfRange(sortedFruitArray, 0, fruitArray.length / 2, Fruit[].class));
     }
 }
