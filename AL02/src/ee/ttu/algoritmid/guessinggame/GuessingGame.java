@@ -22,6 +22,7 @@ public class GuessingGame {
         Fruit fruit = (Fruit) sortedFruitArray[fruitArray.length / 2];
         String fruitName = fruit.getName();
         String oracleAnswer = oracle.isIt(fruit);
+
         if (oracleAnswer.equals("correct!")) {
             return fruitName;
         } else if (oracleAnswer.equals("heavier")) {
