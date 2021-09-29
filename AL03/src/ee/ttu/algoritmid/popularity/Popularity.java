@@ -18,6 +18,9 @@ public class Popularity {
      * @param x, y - coordinates
      */
     void addPoint(Integer x, Integer y) {
+        if (x == null || y == null) {
+            return;
+        }
         List<Integer> point = List.of(x, y);
         coordinates.put(point, coordinates.getOrDefault(point, 0) + 1);
         int numberOfPointOccurances = coordinates.get(point);
