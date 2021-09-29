@@ -40,12 +40,10 @@ public class Popularity {
         return coordinates.getOrDefault(List.of(x, y), 0);
     }
 
-
     /**
      * @return the number of occurrennces of the most popular point
      */
     int maxPopularity() {
         return numberOfOccurences;
     }
-
 }
