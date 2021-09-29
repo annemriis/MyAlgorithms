@@ -34,6 +34,9 @@ public class Popularity {
      * @return the number of occurrennces of the point
      */
     int pointPopularity(Integer x,Integer y) {
+        if (x == null || y == null) {
+            return 0;
+        }
         return coordinates.get(List.of(x, y));
     }
 
