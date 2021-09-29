@@ -23,7 +23,7 @@ public class Popularity {
         }
         List<Integer> point = List.of(x, y);
         coordinates.put(point, coordinates.getOrDefault(point, 0) + 1);
-        int numberOfPointOccurances = coordinates.get(point);
+        int numberOfPointOccurances = coordinates.getOrDefault(point, 0);
         if (numberOfPointOccurances > numberOfOccurences) {
             numberOfOccurences = numberOfPointOccurances;
         }
@@ -37,7 +37,7 @@ public class Popularity {
         if (x == null || y == null) {
             return 0;
         }
-        return coordinates.get(List.of(x, y));
+        return coordinates.getOrDefault(List.of(x, y), 0);
     }
 
 
