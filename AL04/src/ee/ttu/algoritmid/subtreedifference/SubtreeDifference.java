@@ -27,29 +27,6 @@ public class SubtreeDifference {
                     + rootNode.getLeft().getValue() - rootNode.getRight().getSumOfAllChildren()
                     - rootNode.getRight().getValue());
         }
-        /**
-        if (rootNode.getLeft() == null) {
-            calculateDifferences(rootNode.getRight());
-            rootNode.setSumOfAllChildren(rootNode.getRight().getValue() + rootNode.getRight().getSumOfAllChildren());
-            rootNode.setDifferenceOfLeftAndRight(-rootNode.getRight().getValue()
-                    - rootNode.getRight().getSumOfAllChildren());
-            return rootNode;
-        } else if (rootNode.getRight() == null) {
-            calculateDifferences(rootNode.getLeft());
-            rootNode.setSumOfAllChildren(rootNode.getLeft().getValue() + rootNode.getLeft().getSumOfAllChildren());
-            rootNode.setDifferenceOfLeftAndRight(rootNode.getLeft().getValue()
-                    + rootNode.getLeft().getSumOfAllChildren());
-            return rootNode;
-        }
-        calculateDifferences(rootNode.getRight());
-        calculateDifferences(rootNode.getLeft());
-        rootNode.setSumOfAllChildren(rootNode.getLeft().getSumOfAllChildren()
-                + rootNode.getLeft().getValue() + rootNode.getRight().getSumOfAllChildren()
-                + rootNode.getRight().getValue());
-        rootNode.setDifferenceOfLeftAndRight(rootNode.getLeft().getSumOfAllChildren()
-                + rootNode.getLeft().getValue() - rootNode.getRight().getSumOfAllChildren()
-                - rootNode.getRight().getValue());
-         **/
         return rootNode;
     }
 
