@@ -14,7 +14,7 @@ public class SubtreeDifference {
             return rootNode;
         } if (rootNode.getLeft() == null) {
             calculateDifferences(rootNode.getRight());
-            rootNode.setSumOfAllChildren(rootNode.getRight().getValue() + rootNode.getSumOfAllChildren());
+            rootNode.setSumOfAllChildren(rootNode.getRight().getValue() + rootNode.getRight().getSumOfAllChildren());
             rootNode.setDifferenceOfLeftAndRight(-rootNode.getRight().getValue()
                     - rootNode.getRight().getSumOfAllChildren());
             return rootNode;
