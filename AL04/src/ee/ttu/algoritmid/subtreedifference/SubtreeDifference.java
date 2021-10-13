@@ -9,8 +9,6 @@ public class SubtreeDifference {
      */
     public Node calculateDifferences(Node rootNode) {
         if (rootNode.getLeft() == null && rootNode.getRight() == null) {
-            rootNode.setSumOfAllChildren(0);
-            rootNode.setDifferenceOfLeftAndRight(0);
             return rootNode;
         } if (rootNode.getLeft() == null) {
             calculateDifferences(rootNode.getRight());
