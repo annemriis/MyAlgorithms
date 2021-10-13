@@ -14,18 +14,22 @@ public class SubtreeDifference {
             return rootNode;
         }
         if (leftNode == null) {
-            rootNode.setSumOfAllChildren(calculateDifferences(rightNode).getValue() + rightNode.getSumOfAllChildren());
-            rootNode.setDifferenceOfLeftAndRight(-rightNode.getValue() - rightNode.getSumOfAllChildren());
+            long rightNodeValue = rightNode.getValue();
+            rootNode.setSumOfAllChildren(calculateDifferences(rightNode).getSumOfAllChildren() + rightNodeValue);
+            rootNode.setDifferenceOfLeftAndRight(-rightNodeValue - rightNode.getSumOfAllChildren());
         } else if (rightNode == null) {
-            rootNode.setSumOfAllChildren(calculateDifferences(leftNode).getValue() + leftNode.getSumOfAllChildren());
-            rootNode.setDifferenceOfLeftAndRight(leftNode.getValue() + leftNode.getSumOfAllChildren());
+            long leftNodeValue = leftNode.getValue();
+            rootNode.setSumOfAllChildren(calculateDifferences(leftNode).getSumOfAllChildren() + leftNodeValue);
+            rootNode.setDifferenceOfLeftAndRight(leftNodeValue + leftNode.getSumOfAllChildren());
         } else {
+            long leftNodeValue = leftNode.getValue();
+            long rightNodeValue = rightNode.getValue();
             rootNode.setSumOfAllChildren(calculateDifferences(leftNode).getSumOfAllChildren()
-                    + leftNode.getValue() + calculateDifferences(rightNode).getSumOfAllChildren()
-                    + rightNode.getValue());
+                    + leftNodeValue + calculateDifferences(rightNode).getSumOfAllChildren()
+                    + rightNodeValue);
             rootNode.setDifferenceOfLeftAndRight(leftNode.getSumOfAllChildren()
-                    + leftNode.getValue() - rightNode.getSumOfAllChildren()
-                    - rightNode.getValue());
+                    + leftNodeValue - rightNode.getSumOfAllChildren()
+                    - rightNodeValue);
         }
         return rootNode;
     }
