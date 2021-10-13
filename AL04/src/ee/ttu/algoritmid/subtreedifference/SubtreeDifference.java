@@ -15,14 +15,12 @@ public class SubtreeDifference {
         } if (rootNode.getLeft() == null) {
             calculateDifferences(rootNode.getRight());
             rootNode.setSumOfAllChildren(rootNode.getRight().getValue() + rootNode.getSumOfAllChildren());
-            rootNode.setDifferenceOfLeftAndRight(rootNode.getRight().getValue()
-                    + rootNode.getRight().getSumOfAllChildren());
+            rootNode.setDifferenceOfLeftAndRight(0);
             return rootNode;
         } else if (rootNode.getRight() == null) {
             calculateDifferences(rootNode.getLeft());
             rootNode.setSumOfAllChildren(rootNode.getLeft().getValue() + rootNode.getLeft().getSumOfAllChildren());
-            rootNode.setDifferenceOfLeftAndRight(-rootNode.getLeft().getValue()
-                    - rootNode.getLeft().getSumOfAllChildren());
+            rootNode.setDifferenceOfLeftAndRight(0);
             return rootNode;
         }
         calculateDifferences(rootNode.getRight());
