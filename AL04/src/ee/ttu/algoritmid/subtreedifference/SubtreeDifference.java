@@ -13,13 +13,17 @@ public class SubtreeDifference {
             rootNode.setDifferenceOfLeftAndRight(0);
             return rootNode;
         } if (rootNode.getLeft() == null) {
-            rootNode.setSumOfAllChildren(rootNode.getRight().getValue());
-            rootNode.setDifferenceOfLeftAndRight(0);
-            return calculateDifferences(rootNode.getRight());
+            calculateDifferences(rootNode.getRight());
+            rootNode.setSumOfAllChildren(rootNode.getRight().getValue() + rootNode.getSumOfAllChildren());
+            rootNode.setDifferenceOfLeftAndRight(rootNode.getRight().getValue()
+                    + rootNode.getRight().getSumOfAllChildren());
+            return rootNode;
         } else if (rootNode.getRight() == null) {
-            rootNode.setSumOfAllChildren(rootNode.getLeft().getValue());
-            rootNode.setDifferenceOfLeftAndRight(0);
-            return calculateDifferences(rootNode.getLeft());
+            calculateDifferences(rootNode.getLeft());
+            rootNode.setSumOfAllChildren(rootNode.getLeft().getValue() + rootNode.getLeft().getSumOfAllChildren());
+            rootNode.setDifferenceOfLeftAndRight(-rootNode.getLeft().getValue()
+                    - rootNode.getLeft().getSumOfAllChildren());
+            return rootNode;
         }
         calculateDifferences(rootNode.getRight());
         calculateDifferences(rootNode.getLeft());
@@ -48,14 +52,14 @@ public class SubtreeDifference {
         Node c = new Node(3);
         Node d = new Node(13);
         Node e = new Node(5);
-        //Node f = new Node(25);
+        Node f = new Node(25);
 
         rootNode.setLeft(a);
         rootNode.setRight(b);
         a.setLeft(c);
         a.setRight(d);
         b.setLeft(e);
-        //b.setRight(f);
+        b.setRight(f);
 
         SubtreeDifference solution = new SubtreeDifference();
         solution.calculateDifferences(rootNode);
