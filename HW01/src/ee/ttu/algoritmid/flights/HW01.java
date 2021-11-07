@@ -1,5 +1,6 @@
 package ee.ttu.algoritmid.flights;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HW01 implements FlightCrewRegistrationSystem {
@@ -85,5 +86,11 @@ public class HW01 implements FlightCrewRegistrationSystem {
         pilotsAVLTree.remove(pilot);
         copilotsAVLTree.remove(copilot);
         flightAttendantAVLTree.remove(flightAttendant);
+    }
+
+    private List<FlightCrewMember> mergeAVLTrees() {
+        List<FlightCrewMember> waitingList = new ArrayList<>();
+        // while ()
+        return waitingList;
     }
 }

@@ -1,12 +1,19 @@
 package ee.ttu.algoritmid.flights;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FlightCrewMemberBST {
 
     private FlightCrewMemberNode rootNode;
 
     public FlightCrewMemberNode getRootNode() {
         return this.rootNode;
+    }
+
+    public boolean isEmpty() {
+        return rootNode != null;
     }
 
     public void insert(FlightCrewMember flightCrewMember) {
@@ -173,24 +180,15 @@ public class FlightCrewMemberBST {
         return element;
     }
 
-    private boolean nodeHasRight(FlightCrewMemberNode node) {
-        return node.getRight() != null;
-    }
-
     private boolean nodeValueIsGreaterThanK1AndLessThanK2(FlightCrewMemberNode node, double k1, double k2, Double value) {
         return node.getValue() - value >= k1 && node.getValue() - value <= k2;
     }
 
-    private double calculateNodesValues(FlightCrewMemberNode node, double k1, double k2, Double value) {
-        return (node.getValue() - value) + (node.getValue() - value);
-    }
-
-    public void inorderTraversal(Node root) {
+    public void inorderTraversal(FlightCrewMemberNode root) {
         if (root != null) {
             if (root.getLeft() != null) {
                 inorderTraversal(root.getLeft());
             }
-            System.out.println(root.getValue());
             if (root.getRight() != null) {
                 inorderTraversal(root.getRight());
             }
