@@ -12,10 +12,6 @@ public class FlightCrewMemberBST {
         return this.rootNode;
     }
 
-    public boolean isEmpty() {
-        return rootNode != null;
-    }
-
     public void insert(FlightCrewMember flightCrewMember) {
         rootNode = insertNode(rootNode, flightCrewMember);
     }
@@ -35,14 +31,16 @@ public class FlightCrewMemberBST {
     }
 
     public void remove(FlightCrewMemberNode node) {
-        FlightCrewMemberNode leftChild = node.getLeft();
-        FlightCrewMemberNode rightChild = node.getRight();
-        if (leftChild == null && rightChild == null) {
-            removeNodeWithNoChildren(node);
-        } else if (leftChild != null && rightChild != null) {
-            removeNodeWithTwoChildren(node);
-        } else {
-            removeNodeWithOneChild(node);
+        if (node != null) {
+            FlightCrewMemberNode leftChild = node.getLeft();
+            FlightCrewMemberNode rightChild = node.getRight();
+            if (leftChild == null && rightChild == null) {
+                removeNodeWithNoChildren(node);
+            } else if (leftChild != null && rightChild != null) {
+                removeNodeWithTwoChildren(node);
+            } else {
+                removeNodeWithOneChild(node);
+            }
         }
     }
 
