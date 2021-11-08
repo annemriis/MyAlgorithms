@@ -52,7 +52,7 @@ public class FlightCrewMemberBST {
             } else if (parent.getRight() != null && parent.getRight() == node) {
                 parent.setRight(null);
             }
-        } else if (rootNode.equals(node)) {
+        } else if (rootNode != null && rootNode.equals(node)) {
             rootNode = null;
         }
     }
