@@ -77,9 +77,6 @@ public class FlightCrewMemberNode implements Node {
 
     public FlightCrewMemberNode getDuplicate() {
         FlightCrewMemberNode duplicate = new FlightCrewMemberNode(duplicates.remove());
-        duplicate.setLeft(left);
-        duplicate.setRight(right);
-        duplicate.setParent(parent);
         duplicate.setDuplicates(duplicates);
         return duplicate;
     }

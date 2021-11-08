@@ -23,11 +23,9 @@ public class FlightCrewMemberBST {
         } else if (flightCrewMemberExperience < root.getValue()) {
             root.setLeft(insertNode(root.getLeft(), flightCrewMember));
             root.getLeft().setParent(root);
-        } else if (flightCrewMemberExperience > root.getValue()) {
+        } else if (flightCrewMemberExperience >= root.getValue()) {
             root.setRight(insertNode(root.getRight(), flightCrewMember));
             root.getRight().setParent(root);
-        } else if (flightCrewMemberExperience == root.getValue()) {
-            root.addDuplicate(flightCrewMember);
         }
         return root;
     }
@@ -49,14 +47,7 @@ public class FlightCrewMemberBST {
     public void removeNodeWithNoChildren(FlightCrewMemberNode node) {
         FlightCrewMemberNode parent = node.getParent();
         if (parent != null) {
-            if (node.getDuplicates().size() > 0) {
-                FlightCrewMemberNode duplicate = node.getDuplicate();
-                if (parent.getLeft() != null && parent.getLeft() == node) {
-                    parent.setLeft(duplicate);
-                } else if (parent.getRight() != null && parent.getRight() == node) {
-                    parent.setRight(duplicate);
-                }
-            } else if (parent.getLeft() != null && parent.getLeft() == node) {
+            if (parent.getLeft() != null && parent.getLeft() == node) {
                 parent.setLeft(null);
             } else if (parent.getRight() != null && parent.getRight() == node) {
                 parent.setRight(null);
@@ -71,14 +62,7 @@ public class FlightCrewMemberBST {
         FlightCrewMemberNode leftChild = node.getLeft();
         FlightCrewMemberNode rightChild = node.getRight();
         FlightCrewMemberNode newNode;
-        if (node.getDuplicates().size() > 0) {
-            newNode = node.getDuplicate();
-            if (leftChild != null) {
-                leftChild.setParent(newNode);
-            } else {
-                rightChild.setParent(newNode);
-            }
-        } else if (leftChild != null) {
+        if (leftChild != null) {
             newNode = leftChild;
         } else {
             newNode = rightChild;
@@ -97,12 +81,8 @@ public class FlightCrewMemberBST {
 
     public void removeNodeWithTwoChildren(FlightCrewMemberNode node) {
         FlightCrewMemberNode successor;
-        if (node.getDuplicates().size() > 0) {
-            successor = node.getDuplicate();
-        } else {
-            successor = findSuccessor(node);
-            remove(successor);
-        }
+        successor = findSuccessor(node);
+        remove(successor);
         swapNodesData(node, successor);
     }
 
@@ -248,12 +228,37 @@ public class FlightCrewMemberBST {
             }
 
         }
+        CrewMemberTemp crewMemberTemp15 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 1.5);
+        CrewMemberTemp crewMemberTemp652 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 4.5);
+        CrewMemberTemp crewMemberTemp35 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 4.5);
+        CrewMemberTemp crewMemberTemp33 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 0.6);
+
+        FlightCrewMemberBST binarySearchTree3 = new FlightCrewMemberBST();
+        binarySearchTree3.insert(crewMemberTemp15);
+        binarySearchTree3.insert(crewMemberTemp652);
+        binarySearchTree3.insert(crewMemberTemp35);
+        binarySearchTree3.insert(crewMemberTemp33);
+
+        System.out.println(binarySearchTree3.toString());
+
+        binarySearchTree3.remove(binarySearchTree3.rootNode);
+
+        System.out.println(binarySearchTree3.toString());
+
+        binarySearchTree3.remove(binarySearchTree3.rootNode);
+
+        System.out.println(binarySearchTree3.toString());
+
+        binarySearchTree3.remove(binarySearchTree3.rootNode);
+
+        System.out.println(binarySearchTree3.toString());
+
 
         CrewMemberTemp crewMemberTemp1 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 126.912);
         CrewMemberTemp crewMemberTemp2 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 114.89255);
         CrewMemberTemp crewMemberTemp3 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
         CrewMemberTemp crewMemberTemp4 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
-        CrewMemberTemp crewMemberTemp5 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 149.61);
+        CrewMemberTemp crewMemberTemp5 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
         CrewMemberTemp crewMemberTemp6 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 142.44);
         CrewMemberTemp crewMemberTemp7 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.23);
         CrewMemberTemp crewMemberTemp8 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 121.23);
@@ -270,25 +275,13 @@ public class FlightCrewMemberBST {
 
         System.out.println(binarySearchTree.toString());
 
-        binarySearchTree.remove(binarySearchTree.rootNode);
-
-        System.out.println(binarySearchTree.toString());
-
-        binarySearchTree.remove(binarySearchTree.rootNode);
-
-        System.out.println(binarySearchTree.toString());
-
-        binarySearchTree.remove(binarySearchTree.rootNode);
-
-        System.out.println(binarySearchTree.toString());
-
         List<FlightCrewMemberNode> nodes = binarySearchTree.inorderTraversal(binarySearchTree.rootNode, new ArrayList<>());
         for (FlightCrewMemberNode node: nodes) {
             System.out.println(node.getValue());
         }
 
         System.out.println(binarySearchTree.findElementGreaterAtLeastByK1(binarySearchTree.rootNode, 5, 10, 115.23).getValue());
-        System.out.println(binarySearchTree.findElementLessAtLeastByK1(binarySearchTree.rootNode, 3, Integer.MAX_VALUE, 125.5).getValue());
+        System.out.println(binarySearchTree.findElementLessAtLeastByK1(binarySearchTree.rootNode, 3, Integer.MAX_VALUE, 135.5).getValue());
 
 
         CrewMemberTemp crewMemberTemp9 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 106.74079484660564);
