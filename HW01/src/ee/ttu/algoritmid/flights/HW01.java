@@ -35,8 +35,9 @@ public class HW01 implements FlightCrewRegistrationSystem {
     }
 
     private boolean participantHasCorrectInformation(FlightCrewMember participant) {
-        return participant != null && !participant.getName().strip().equals("")
+        return participant != null && participant.getName() != null && !participant.getName().strip().equals("")
                 && participant.getWorkExperience() >= 0
+                && participant.getRole() != null
                 && (participant.getRole().equals(FlightCrewMember.Role.PILOT)
                 || participant.getRole().equals(FlightCrewMember.Role.COPILOT)
                 || participant.getRole().equals(FlightCrewMember.Role.FLIGHT_ATTENDANT));
