@@ -1,6 +1,7 @@
 package ee.ttu.algoritmid.flights;
 
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class FlightCrewMemberNode implements Node {
 
@@ -9,7 +10,7 @@ public class FlightCrewMemberNode implements Node {
     private FlightCrewMemberNode left;
     private FlightCrewMemberNode right;
     private int height;
-    private HashSet<FlightCrewMember> duplicates = new HashSet<>();
+    private Queue<FlightCrewMember> duplicates = new LinkedList<>();
 
     public FlightCrewMemberNode(FlightCrewMember data) {
         this.data = data;
@@ -33,6 +34,10 @@ public class FlightCrewMemberNode implements Node {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setDuplicates(Queue<FlightCrewMember> duplicates) {
+        this.duplicates = duplicates;
     }
 
     public FlightCrewMember getData() {
@@ -62,7 +67,7 @@ public class FlightCrewMemberNode implements Node {
         return height;
     }
 
-    public HashSet<FlightCrewMember> getDuplicates() {
+    public Queue<FlightCrewMember> getDuplicates() {
         return duplicates;
     }
 
@@ -70,8 +75,13 @@ public class FlightCrewMemberNode implements Node {
         duplicates.add(flightCrewMember);
     }
 
-    public void removeDuplicate(FlightCrewMember flightCrewMember) {
-        duplicates.remove(flightCrewMember);
+    public FlightCrewMemberNode getDuplicate() {
+        FlightCrewMemberNode duplicate = new FlightCrewMemberNode(duplicates.remove());
+        duplicate.setLeft(left);
+        duplicate.setRight(right);
+        duplicate.setParent(parent);
+        duplicate.setDuplicates(duplicates);
+        return duplicate;
     }
 
     /*

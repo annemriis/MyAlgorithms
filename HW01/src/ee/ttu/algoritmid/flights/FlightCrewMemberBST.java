@@ -24,8 +24,10 @@ public class FlightCrewMemberBST {
             root.setLeft(insertNode(root.getLeft(), flightCrewMember));
             root.getLeft().setParent(root);
         } else if (flightCrewMemberExperience > root.getValue()) {
-            root.setRight( insertNode(root.getRight(), flightCrewMember));
+            root.setRight(insertNode(root.getRight(), flightCrewMember));
             root.getRight().setParent(root);
+        } else if (flightCrewMemberExperience == root.getValue()) {
+            root.addDuplicate(flightCrewMember);
         }
         return root;
     }
@@ -47,7 +49,14 @@ public class FlightCrewMemberBST {
     public void removeNodeWithNoChildren(FlightCrewMemberNode node) {
         FlightCrewMemberNode parent = node.getParent();
         if (parent != null) {
-            if (parent.getLeft() != null && parent.getLeft() == node) {
+            if (node.getDuplicates().size() > 0) {
+                FlightCrewMemberNode duplicate = node.getDuplicate();
+                if (parent.getLeft() != null && parent.getLeft() == node) {
+                    parent.setLeft(duplicate);
+                } else if (parent.getRight() != null && parent.getRight() == node) {
+                    parent.setRight(duplicate);
+                }
+            } else if (parent.getLeft() != null && parent.getLeft() == node) {
                 parent.setLeft(null);
             } else if (parent.getRight() != null && parent.getRight() == node) {
                 parent.setRight(null);
@@ -62,7 +71,14 @@ public class FlightCrewMemberBST {
         FlightCrewMemberNode leftChild = node.getLeft();
         FlightCrewMemberNode rightChild = node.getRight();
         FlightCrewMemberNode newNode;
-        if (leftChild != null) {
+        if (node.getDuplicates().size() > 0) {
+            newNode = node.getDuplicate();
+            if (leftChild != null) {
+                leftChild.setParent(newNode);
+            } else {
+                rightChild.setParent(newNode);
+            }
+        } else if (leftChild != null) {
             newNode = leftChild;
         } else {
             newNode = rightChild;
@@ -80,8 +96,13 @@ public class FlightCrewMemberBST {
     }
 
     public void removeNodeWithTwoChildren(FlightCrewMemberNode node) {
-        FlightCrewMemberNode successor = findSuccessor(node);
-        remove(successor);
+        FlightCrewMemberNode successor;
+        if (node.getDuplicates().size() > 0) {
+            successor = node.getDuplicate();
+        } else {
+            successor = findSuccessor(node);
+            remove(successor);
+        }
         swapNodesData(node, successor);
     }
 
@@ -231,11 +252,11 @@ public class FlightCrewMemberBST {
         CrewMemberTemp crewMemberTemp1 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 126.912);
         CrewMemberTemp crewMemberTemp2 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 114.89255);
         CrewMemberTemp crewMemberTemp3 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
-        CrewMemberTemp crewMemberTemp4 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 117.17);
+        CrewMemberTemp crewMemberTemp4 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
         CrewMemberTemp crewMemberTemp5 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 149.61);
         CrewMemberTemp crewMemberTemp6 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 142.44);
-        CrewMemberTemp crewMemberTemp7 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.54);
-        CrewMemberTemp crewMemberTemp8 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
+        CrewMemberTemp crewMemberTemp7 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.23);
+        CrewMemberTemp crewMemberTemp8 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 121.23);
 
         FlightCrewMemberBST binarySearchTree = new FlightCrewMemberBST();
         binarySearchTree.insert(crewMemberTemp1);
@@ -246,6 +267,18 @@ public class FlightCrewMemberBST {
         binarySearchTree.insert(crewMemberTemp6);
         binarySearchTree.insert(crewMemberTemp7);
         binarySearchTree.insert(crewMemberTemp8);
+
+        System.out.println(binarySearchTree.toString());
+
+        binarySearchTree.remove(binarySearchTree.rootNode);
+
+        System.out.println(binarySearchTree.toString());
+
+        binarySearchTree.remove(binarySearchTree.rootNode);
+
+        System.out.println(binarySearchTree.toString());
+
+        binarySearchTree.remove(binarySearchTree.rootNode);
 
         System.out.println(binarySearchTree.toString());
 
