@@ -1,6 +1,9 @@
 package ee.ttu.algoritmid.flights;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FlightCrewMemberBST {
 
     private FlightCrewMemberNode rootNode;
@@ -180,15 +183,17 @@ public class FlightCrewMemberBST {
         return node.getValue() - value >= k1 && node.getValue() - value <= k2;
     }
 
-    public void inorderTraversal(FlightCrewMemberNode root) {
+    public List<FlightCrewMemberNode> inorderTraversal(FlightCrewMemberNode root, List<FlightCrewMemberNode> inorder) {
         if (root != null) {
             if (root.getLeft() != null) {
-                inorderTraversal(root.getLeft());
+                inorderTraversal(root.getLeft(), inorder);
             }
+            inorder.add(root);
             if (root.getRight() != null) {
-                inorderTraversal(root.getRight());
+                inorderTraversal(root.getRight(), inorder);
             }
         }
+        return inorder;
     }
 
     public String toString() {
@@ -246,10 +251,13 @@ public class FlightCrewMemberBST {
 
         System.out.println(binarySearchTree.toString());
 
-        binarySearchTree.inorderTraversal(binarySearchTree.rootNode);
+        List<FlightCrewMemberNode> nodes = binarySearchTree.inorderTraversal(binarySearchTree.rootNode, new ArrayList<>());
+        for (FlightCrewMemberNode node: nodes) {
+            System.out.println(node.getValue());
+        }
 
         System.out.println(binarySearchTree.findElementGreaterAtLeastByK1(binarySearchTree.rootNode, 5, 10, 115.23).getValue());
-        //System.out.println(binarySearchTree.findElementLessAtLeastByK1(binarySearchTree.rootNode, 3, Integer.MAX_VALUE, 125.5).getValue());
+        System.out.println(binarySearchTree.findElementLessAtLeastByK1(binarySearchTree.rootNode, 3, Integer.MAX_VALUE, 125.5).getValue());
 
 
         CrewMemberTemp crewMemberTemp9 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 106.74079484660564);
@@ -265,7 +273,5 @@ public class FlightCrewMemberBST {
         binarySearchTree1.insert(crewMemberTemp13);
 
         System.out.println(binarySearchTree1.toString());
-
-        System.out.println(binarySearchTree1.findElementLessAtLeastByK1(binarySearchTree1.rootNode, 5, 10, 133.41630478217095).getValue());
     }
 }
