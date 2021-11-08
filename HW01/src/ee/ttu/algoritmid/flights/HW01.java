@@ -14,10 +14,14 @@ public class HW01 implements FlightCrewRegistrationSystem {
         if (!participantHasCorrectInformation(participant)) {
             throw new IllegalArgumentException();
         }
-        FlightCrewMemberNode pilot = findPilot(participant);
         FlightCrewMemberNode copilot = findCopilot(participant);
-        FlightCrewMemberNode flightAttendant = findFlightAttendant(participant);
-        if (pilot == null || copilot == null || flightAttendant == null) {
+        FlightCrewMemberNode pilot = null;
+        FlightCrewMemberNode flightAttendant = null;
+        if (copilot != null) {
+            pilot = findPilot(participant, copilot.getData());
+            flightAttendant = findFlightAttendant(participant, copilot.getData());
+        }
+        if (pilot == null || flightAttendant == null) {
             addParticipantToWaitingList(participant);
             return null;
         }
@@ -39,13 +43,13 @@ public class HW01 implements FlightCrewRegistrationSystem {
                 || participant.getRole().equals(FlightCrewMember.Role.FLIGHT_ATTENDANT));
     }
 
-    private FlightCrewMemberNode findPilot(FlightCrewMember participant) {
+    private FlightCrewMemberNode findPilot(FlightCrewMember participant, FlightCrewMember copilot) {
         if (participant.getRole().equals(FlightCrewMember.Role.COPILOT)) {
             return pilotsAVLTree
                     .findElementGreaterAtLeastByK1(pilotsAVLTree.getRootNode(), 5, 10, participant.getWorkExperience());
         } else if (participant.getRole().equals(FlightCrewMember.Role.FLIGHT_ATTENDANT)) {
             return pilotsAVLTree
-                    .findElementGreaterAtLeastByK1(pilotsAVLTree.getRootNode(), 8, 13, participant.getWorkExperience());
+                    .findElementGreaterAtLeastByK1(pilotsAVLTree.getRootNode(), 5, 10, copilot.getWorkExperience());
         }
         return new FlightCrewMemberNode(participant);
     }
@@ -61,10 +65,10 @@ public class HW01 implements FlightCrewRegistrationSystem {
         return new FlightCrewMemberNode(participant);
     }
 
-    private FlightCrewMemberNode findFlightAttendant(FlightCrewMember participant) {
+    private FlightCrewMemberNode findFlightAttendant(FlightCrewMember participant, FlightCrewMember copilot) {
         if (participant.getRole().equals(FlightCrewMember.Role.PILOT)) {
             return flightAttendantAVLTree
-                    .findElementLessAtLeastByK1(flightAttendantAVLTree.getRootNode(), 8, 13, participant.getWorkExperience());
+                    .findElementLessAtLeastByK1(flightAttendantAVLTree.getRootNode(), 3, Integer.MAX_VALUE, copilot.getWorkExperience());
         } else if (participant.getRole().equals(FlightCrewMember.Role.COPILOT)) {
             return flightAttendantAVLTree
                     .findElementLessAtLeastByK1(flightAttendantAVLTree.getRootNode(), 3, Integer.MAX_VALUE, participant.getWorkExperience());
@@ -77,8 +81,9 @@ public class HW01 implements FlightCrewRegistrationSystem {
             flightAttendantAVLTree.insert(participant);
         } else if (participant.getRole().equals(FlightCrewMember.Role.COPILOT)) {
             copilotsAVLTree.insert(participant);
+        } else {
+            pilotsAVLTree.insert(participant);
         }
-        pilotsAVLTree.insert(participant);
     }
 
     private void removeCrewMembersFromWaitingList(FlightCrewMemberNode pilot, FlightCrewMemberNode copilot,

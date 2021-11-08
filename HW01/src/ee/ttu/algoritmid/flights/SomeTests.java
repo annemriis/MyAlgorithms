@@ -246,10 +246,12 @@ public class SomeTests {
 
         if (team == null) {
             if (expectedTeamExperience != null) {
+                System.out.println(participant.getWorkExperience());
                 fail("Team wasn't found, but should have: " + caseId);
             }
         } else {
             if (expectedTeamExperience == null) {
+                System.out.println(participant.getWorkExperience());
                 fail("Team was found, but shouldn't have: " + caseId);
             } else {
                 FlightCrewMember teamMate = team.getPilot();

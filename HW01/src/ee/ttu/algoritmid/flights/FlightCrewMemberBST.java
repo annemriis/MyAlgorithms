@@ -1,9 +1,6 @@
 package ee.ttu.algoritmid.flights;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FlightCrewMemberBST {
 
     private FlightCrewMemberNode rootNode;
@@ -147,21 +144,17 @@ public class FlightCrewMemberBST {
 
     public FlightCrewMemberNode findElementLessAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
-        if (node == null || nodeValueIsLessThanK1AndGreaterThanK2(node, k1, k2, value)) {
-            element = node;
-            if (nodeHasLeft(node) && nodeValueIsLessThanK1AndGreaterThanK2(node.getLeft(), k1, k2, value)) {
-                element = findElementLessAtLeastByK1(node.getLeft(), k1, k2, value);
+        while (node != null) {
+            if (value <= node.getValue()) {
+                node = node.getLeft();
+            } else {
+                if (nodeValueIsLessThanK1AndGreaterThanK2(node, k1, k2, value)) {
+                    element = node;
+                }
+                node = node.getRight();
             }
-        } else if (value < node.getValue() && node.getLeft() != null) {
-            element = findElementLessAtLeastByK1(node.getLeft(), k1, k2, value);
-        } else if (value > node.getValue() && node.getRight() != null){
-            element = findElementLessAtLeastByK1(node.getRight(), k1, k2, value);
         }
         return element;
-    }
-
-    private boolean nodeHasLeft(FlightCrewMemberNode node) {
-        return node.getLeft() != null;
     }
 
     private boolean nodeValueIsLessThanK1AndGreaterThanK2(FlightCrewMemberNode node, double k1, double k2, Double value) {
@@ -170,12 +163,15 @@ public class FlightCrewMemberBST {
 
     public FlightCrewMemberNode findElementGreaterAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
-        if (node == null || nodeValueIsGreaterThanK1AndLessThanK2(node, k1, k2, value)) {
-            element = node;
-        } else if (value < node.getValue() && node.getLeft() != null && nodeValueIsGreaterThanK1AndLessThanK2(node.getLeft(), k1, k2, value)) {
-            element = findElementGreaterAtLeastByK1(node.getLeft(), k1, k2, value);
-        } else if (node.getRight() != null){
-            element = findElementGreaterAtLeastByK1(node.getRight(), k1, k2, value);
+        while (node != null) {
+            if (value + k1 <= node.getValue()) {
+                if (nodeValueIsGreaterThanK1AndLessThanK2(node, k1, k2, value)) {
+                    element = node;
+                }
+                node = node.getLeft();
+            } else {
+                node = node.getRight();
+            }
         }
         return element;
     }
@@ -229,13 +225,14 @@ public class FlightCrewMemberBST {
 
         }
 
-        CrewMemberTemp crewMemberTemp1 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 3.5);
-        CrewMemberTemp crewMemberTemp2 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 5.5);
-        CrewMemberTemp crewMemberTemp3 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 1.5);
-        CrewMemberTemp crewMemberTemp4 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 4.5);
-        CrewMemberTemp crewMemberTemp5 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 12.5);
-        CrewMemberTemp crewMemberTemp6 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 0.5);
-        CrewMemberTemp crewMemberTemp7 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.5);
+        CrewMemberTemp crewMemberTemp1 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 126.912);
+        CrewMemberTemp crewMemberTemp2 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 114.89255);
+        CrewMemberTemp crewMemberTemp3 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
+        CrewMemberTemp crewMemberTemp4 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 117.17);
+        CrewMemberTemp crewMemberTemp5 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 149.61);
+        CrewMemberTemp crewMemberTemp6 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 142.44);
+        CrewMemberTemp crewMemberTemp7 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.54);
+        CrewMemberTemp crewMemberTemp8 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.23);
 
         FlightCrewMemberBST binarySearchTree = new FlightCrewMemberBST();
         binarySearchTree.insert(crewMemberTemp1);
@@ -245,9 +242,13 @@ public class FlightCrewMemberBST {
         binarySearchTree.insert(crewMemberTemp5);
         binarySearchTree.insert(crewMemberTemp6);
         binarySearchTree.insert(crewMemberTemp7);
+        binarySearchTree.insert(crewMemberTemp8);
 
         System.out.println(binarySearchTree.toString());
 
         binarySearchTree.inorderTraversal(binarySearchTree.rootNode);
+
+        System.out.println(binarySearchTree.findElementGreaterAtLeastByK1(binarySearchTree.rootNode, 5, 10, 115.23).getValue());
+        System.out.println(binarySearchTree.findElementLessAtLeastByK1(binarySearchTree.rootNode, 3, Integer.MAX_VALUE, 125.5).getValue());
     }
 }
