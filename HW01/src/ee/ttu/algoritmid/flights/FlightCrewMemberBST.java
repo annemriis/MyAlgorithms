@@ -146,7 +146,7 @@ public class FlightCrewMemberBST {
     public FlightCrewMemberNode findElementLessAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
         while (node != null) {
-            if (value - k1 <= node.getValue()) {
+            if (value - k1 < node.getValue()) {
                 node = node.getLeft();
             } else {
                 if (nodeValueIsLessThanK1AndGreaterThanK2(node, k1, k2, value)) {
@@ -235,7 +235,7 @@ public class FlightCrewMemberBST {
         CrewMemberTemp crewMemberTemp5 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 149.61);
         CrewMemberTemp crewMemberTemp6 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 142.44);
         CrewMemberTemp crewMemberTemp7 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.54);
-        CrewMemberTemp crewMemberTemp8 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 120.23);
+        CrewMemberTemp crewMemberTemp8 = new CrewMemberTemp("Kati", FlightCrewMember.Role.PILOT, 129.01);
 
         FlightCrewMemberBST binarySearchTree = new FlightCrewMemberBST();
         binarySearchTree.insert(crewMemberTemp1);
@@ -271,5 +271,7 @@ public class FlightCrewMemberBST {
         binarySearchTree1.insert(crewMemberTemp13);
 
         System.out.println(binarySearchTree1.toString());
+
+        System.out.println(binarySearchTree1.findElementLessAtLeastByK1(binarySearchTree1.rootNode, 3, Integer.MAX_VALUE, 115.1).getValue());
     }
 }

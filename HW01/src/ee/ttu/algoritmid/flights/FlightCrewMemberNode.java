@@ -62,6 +62,10 @@ public class FlightCrewMemberNode implements Node {
         return height;
     }
 
+    public HashSet<FlightCrewMember> getDuplicates() {
+        return duplicates;
+    }
+
     public void addDuplicate(FlightCrewMember flightCrewMember) {
         duplicates.add(flightCrewMember);
     }
