@@ -1,8 +1,5 @@
 package ee.ttu.algoritmid.flights;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class FlightCrewMemberNode implements Node {
 
     private FlightCrewMember data;
@@ -10,13 +7,8 @@ public class FlightCrewMemberNode implements Node {
     private FlightCrewMemberNode left;
     private FlightCrewMemberNode right;
     private int height;
-    private Queue<FlightCrewMember> duplicates = new LinkedList<>();
 
     public FlightCrewMemberNode(FlightCrewMember data) {
-        this.data = data;
-    }
-
-    public void setData(FlightCrewMember data) {
         this.data = data;
     }
 
@@ -30,14 +22,6 @@ public class FlightCrewMemberNode implements Node {
 
     public void setRight(FlightCrewMemberNode right) {
         this.right = right;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setDuplicates(Queue<FlightCrewMember> duplicates) {
-        this.duplicates = duplicates;
     }
 
     public FlightCrewMember getData() {
@@ -63,22 +47,9 @@ public class FlightCrewMemberNode implements Node {
         return right;
     }
 
+    @Override
     public int getHeight() {
         return height;
-    }
-
-    public Queue<FlightCrewMember> getDuplicates() {
-        return duplicates;
-    }
-
-    public void addDuplicate(FlightCrewMember flightCrewMember) {
-        duplicates.add(flightCrewMember);
-    }
-
-    public FlightCrewMemberNode getDuplicate() {
-        FlightCrewMemberNode duplicate = new FlightCrewMemberNode(duplicates.remove());
-        duplicate.setDuplicates(duplicates);
-        return duplicate;
     }
 
     /*
@@ -98,5 +69,33 @@ public class FlightCrewMemberNode implements Node {
         }
 
         return sb;
+    }
+
+    @Override
+    public int calculateBalance() {
+        int leftHeight = height(left);
+        int rightHeight = height(right);
+        return rightHeight - leftHeight;
+    }
+
+    @Override
+    public void updateNode() {
+        int leftHeight = height(left);
+        int rightHeight = height(right);
+        height = calculateHeight(leftHeight, rightHeight);
+    }
+
+    private int calculateHeight(int leftHeight, int rightHeight) {
+        if (leftHeight > rightHeight) {
+            return leftHeight + 1;
+        }
+        return rightHeight + 1;
+    }
+
+    private int height(FlightCrewMemberNode node) {
+        if (node == null) {
+            return -1;
+        }
+        return node.getHeight();
     }
 }

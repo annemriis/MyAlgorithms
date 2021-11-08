@@ -9,5 +9,11 @@ public interface Node {
 
     public Node getRight();
 
+    public int getHeight();
+
     public StringBuilder printTree(StringBuilder stringBuilder1, boolean bool, StringBuilder stringBuilder2);
+
+    public int calculateBalance();
+
+    public void updateNode();
 }

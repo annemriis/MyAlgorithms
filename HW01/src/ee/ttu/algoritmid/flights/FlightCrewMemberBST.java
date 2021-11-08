@@ -6,7 +6,7 @@ import java.util.List;
 
 public class FlightCrewMemberBST {
 
-    private FlightCrewMemberNode rootNode;
+    protected FlightCrewMemberNode rootNode;
 
     public FlightCrewMemberNode getRootNode() {
         return this.rootNode;
@@ -44,7 +44,7 @@ public class FlightCrewMemberBST {
         }
     }
 
-    public void removeNodeWithNoChildren(FlightCrewMemberNode node) {
+    public FlightCrewMemberNode removeNodeWithNoChildren(FlightCrewMemberNode node) {
         FlightCrewMemberNode parent = node.getParent();
         if (parent != null) {
             if (parent.getLeft() != null && parent.getLeft() == node) {
@@ -55,9 +55,10 @@ public class FlightCrewMemberBST {
         } else if (rootNode != null && rootNode.equals(node)) {
             rootNode = null;
         }
+        return null;
     }
 
-    public void removeNodeWithOneChild(FlightCrewMemberNode node) {
+    public FlightCrewMemberNode removeNodeWithOneChild(FlightCrewMemberNode node) {
         FlightCrewMemberNode parent = node.getParent();
         FlightCrewMemberNode leftChild = node.getLeft();
         FlightCrewMemberNode rightChild = node.getRight();
@@ -77,13 +78,15 @@ public class FlightCrewMemberBST {
             newNode.setParent(null);
             rootNode = newNode;
         }
+        return newNode;
     }
 
-    public void removeNodeWithTwoChildren(FlightCrewMemberNode node) {
+    public FlightCrewMemberNode removeNodeWithTwoChildren(FlightCrewMemberNode node) {
         FlightCrewMemberNode successor;
         successor = findSuccessor(node);
         remove(successor);
         swapNodesData(node, successor);
+        return successor;
     }
 
     private void swapNodesData(FlightCrewMemberNode node, FlightCrewMemberNode successor) {
