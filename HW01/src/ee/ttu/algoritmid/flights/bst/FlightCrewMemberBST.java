@@ -1,20 +1,30 @@
-package ee.ttu.algoritmid.flights;
+package ee.ttu.algoritmid.flights.bst;
 
+
+import ee.ttu.algoritmid.flights.FlightCrewMember;
 
 import java.util.List;
 
-public class FlightCrewMemberBST {
+public class FlightCrewMemberBST implements BinarySearchTree {
 
     protected FlightCrewMemberNode rootNode;
 
+    @Override
     public FlightCrewMemberNode getRootNode() {
         return this.rootNode;
     }
 
+    @Override
     public void insert(FlightCrewMember flightCrewMember) {
         rootNode = insertNode(rootNode, flightCrewMember);
     }
 
+    /**
+     *
+     * @param root
+     * @param flightCrewMember
+     * @return
+     */
     public FlightCrewMemberNode insertNode(FlightCrewMemberNode root, FlightCrewMember flightCrewMember) {
         double flightCrewMemberExperience = flightCrewMember.getWorkExperience();
         if (root == null) {
@@ -27,10 +37,17 @@ public class FlightCrewMemberBST {
         return root;
     }
 
+    @Override
     public void remove(FlightCrewMember flightCrewMember) {
         rootNode = removeNode(rootNode, flightCrewMember);
     }
 
+    /**
+     *
+     * @param root
+     * @param flightCrewMember
+     * @return
+     */
     public FlightCrewMemberNode removeNode(FlightCrewMemberNode root, FlightCrewMember flightCrewMember) {
         double flightCrewMemberExperience = flightCrewMember.getWorkExperience();
         if (root == null) {
@@ -54,17 +71,19 @@ public class FlightCrewMemberBST {
 
     private void removeNodeWithTwoChildren(FlightCrewMemberNode node) {
         FlightCrewMemberNode successor = findSuccessor(node);
+        assert successor != null;
         node.setData(successor.getData());
         node.setRight(removeNode(node.getRight(), successor.getData()));
     }
 
-    public FlightCrewMemberNode findSuccessor(FlightCrewMemberNode node) {
+    private FlightCrewMemberNode findSuccessor(FlightCrewMemberNode node) {
         if (node.getRight() != null) {
             return findMin(node.getRight());
         }
         return null;
     }
 
+    @Override
     public FlightCrewMemberNode findMin(FlightCrewMemberNode node) {
         while (node.getLeft() != null) {
             node = node.getLeft();
@@ -72,6 +91,15 @@ public class FlightCrewMemberBST {
         return node;
     }
 
+    /**
+     *
+     * @param node
+     * @param k1
+     * @param k2
+     * @param value
+     * @return
+     */
+    @Override
     public FlightCrewMemberNode findElementLessAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
         while (node != null) {
@@ -91,6 +119,15 @@ public class FlightCrewMemberBST {
         return value - node.getValue() >= k1 && value - node.getValue() <= k2;
     }
 
+    /**
+     *
+     * @param node
+     * @param k1
+     * @param k2
+     * @param value
+     * @return
+     */
+    @Override
     public FlightCrewMemberNode findElementGreaterAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
         while (node != null) {
@@ -110,12 +147,16 @@ public class FlightCrewMemberBST {
         return node.getValue() - value >= k1 && node.getValue() - value <= k2;
     }
 
+    @Override
     public List<FlightCrewMemberNode> inorderTraversal(FlightCrewMemberNode root, List<FlightCrewMemberNode> inorder) {
         if (root != null) {
+            //
             if (root.getLeft() != null) {
                 inorderTraversal(root.getLeft(), inorder);
             }
+            //
             inorder.add(root);
+            //
             if (root.getRight() != null) {
                 inorderTraversal(root.getRight(), inorder);
             }

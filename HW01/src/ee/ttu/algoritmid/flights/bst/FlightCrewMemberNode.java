@@ -1,4 +1,6 @@
-package ee.ttu.algoritmid.flights;
+package ee.ttu.algoritmid.flights.bst;
+
+import ee.ttu.algoritmid.flights.FlightCrewMember;
 
 public class FlightCrewMemberNode implements Node {
 

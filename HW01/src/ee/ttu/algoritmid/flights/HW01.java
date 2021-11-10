@@ -1,5 +1,8 @@
 package ee.ttu.algoritmid.flights;
 
+import ee.ttu.algoritmid.flights.bst.AVLTree;
+import ee.ttu.algoritmid.flights.bst.FlightCrewMemberNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +97,10 @@ public class HW01 implements FlightCrewRegistrationSystem {
         flightAttendantAVLTree.remove(flightAttendant);
     }
 
+    /**
+     *
+     * @return
+     */
     private List<FlightCrewMember> mergeAVLTrees() {
         List<FlightCrewMember> waitingList = new ArrayList<>();
         List<FlightCrewMemberNode> pilots = pilotsAVLTree.inorderTraversal(pilotsAVLTree.getRootNode(), new ArrayList<>());
@@ -109,6 +116,7 @@ public class HW01 implements FlightCrewRegistrationSystem {
             FlightCrewMemberNode pilot = null;
             FlightCrewMemberNode copilot = null;
             FlightCrewMemberNode flightAttendant = null;
+            //
             if (pilots.size() - 1 >= pilotsIndex) {
                 pilot = pilots.get(pilotsIndex);
             }
@@ -119,6 +127,7 @@ public class HW01 implements FlightCrewRegistrationSystem {
                 flightAttendant = flightAttendants.get(flightAttendantsIndex);
             }
 
+            //
             FlightCrewMember flightCrewMember = flightCrewMemberWithSmallestExperience(pilot, copilot, flightAttendant).getData();
             if (flightCrewMember.getRole().equals(FlightCrewMember.Role.PILOT)) {
                 pilotsIndex += 1;
@@ -139,6 +148,13 @@ public class HW01 implements FlightCrewRegistrationSystem {
         return pilots.size() + copilots.size() + flightAttendants.size();
     }
 
+    /**
+     *
+     * @param pilot
+     * @param copilot
+     * @param flightAttendant
+     * @return
+     */
     private FlightCrewMemberNode flightCrewMemberWithSmallestExperience(FlightCrewMemberNode pilot,
                                                                         FlightCrewMemberNode copilot,
                                                                         FlightCrewMemberNode flightAttendant) {
@@ -156,6 +172,13 @@ public class HW01 implements FlightCrewRegistrationSystem {
         return pilot;
     }
 
+    /**
+     *
+     * @param pilot
+     * @param copilot
+     * @param flightAttendant
+     * @return
+     */
     private FlightCrewMemberNode flightCrewMemberWithSmallestExperienceOneIsNull(FlightCrewMemberNode pilot,
                                                                                  FlightCrewMemberNode copilot,
                                                                                  FlightCrewMemberNode flightAttendant) {
