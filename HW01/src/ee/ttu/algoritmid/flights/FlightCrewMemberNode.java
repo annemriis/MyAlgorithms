@@ -3,7 +3,6 @@ package ee.ttu.algoritmid.flights;
 public class FlightCrewMemberNode implements Node {
 
     private FlightCrewMember data;
-    private FlightCrewMemberNode parent;
     private FlightCrewMemberNode left;
     private FlightCrewMemberNode right;
     private int height;
@@ -14,10 +13,6 @@ public class FlightCrewMemberNode implements Node {
 
     public void setData(FlightCrewMember data) {
         this.data = data;
-    }
-
-    public void setParent(FlightCrewMemberNode parent) {
-        this.parent = parent;
     }
 
     public void setLeft(FlightCrewMemberNode left) {
@@ -37,10 +32,6 @@ public class FlightCrewMemberNode implements Node {
         return data.getWorkExperience();
     }
 
-    public FlightCrewMemberNode getParent() {
-        return parent;
-    }
-
     @Override
     public FlightCrewMemberNode getLeft() {
         return left;
@@ -54,38 +45,6 @@ public class FlightCrewMemberNode implements Node {
     @Override
     public int getHeight() {
         return height;
-    }
-
-    /*
-        This method will print out constructed tree
-        !! DO NOT CHANGE THIS !!
-     */
-    @Override
-    public StringBuilder printTree(StringBuilder prefix, boolean isTail, StringBuilder sb) {
-        if(right != null) {
-            right.printTree(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
-        }
-
-        double parentValue = 0;
-        double leftValue = 0;
-        double rightValue = 0;
-        if (parent != null) {
-            parentValue = parent.getValue();
-        }
-        if (left != null) {
-            leftValue = left.getValue();
-        }
-        if (right != null) {
-            rightValue = right.getValue();
-        }
-
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(getValue()).append(" Parent: ").append(parentValue).append(" Left: ").append(leftValue).append(" Right: ").append(rightValue).append("\n");
-
-        if(left != null) {
-            left.printTree(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
-        }
-
-        return sb;
     }
 
     @Override
