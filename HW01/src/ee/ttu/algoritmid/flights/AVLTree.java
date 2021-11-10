@@ -3,6 +3,22 @@ package ee.ttu.algoritmid.flights;
 
 public class AVLTree extends FlightCrewMemberBST {
 
+    @Override
+    public FlightCrewMemberNode insertNode(FlightCrewMemberNode node, FlightCrewMember flightCrewMember) {
+        node = super.insertNode(node, flightCrewMember);
+        node.updateNode();
+        return balance(node);
+    }
+
+    @Override
+    public FlightCrewMemberNode removeNode(FlightCrewMemberNode node, FlightCrewMember flightCrewMember) {
+        node = super.removeNode(node, flightCrewMember);
+        if (node != null) {
+            node.updateNode();
+        }
+        return balance(node);
+    }
+
     private FlightCrewMemberNode rotateRight(FlightCrewMemberNode node) {
         FlightCrewMemberNode left = node.getLeft();
         FlightCrewMemberNode leftRight = left.getRight();
