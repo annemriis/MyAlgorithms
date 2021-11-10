@@ -30,95 +30,35 @@ public class FlightCrewMemberBST {
         return root;
     }
 
-    public void remove(FlightCrewMemberNode node) {
-        if (node != null) {
-            FlightCrewMemberNode leftChild = node.getLeft();
-            FlightCrewMemberNode rightChild = node.getRight();
-            if (leftChild == null && rightChild == null) {
-                removeNodeWithNoChildren(node);
-            } else if (leftChild != null && rightChild != null) {
-                removeNodeWithTwoChildren(node);
-            } else {
-                removeNodeWithOneChild(node);
-            }
-        }
+    public void remove(FlightCrewMember flightCrewMember) {
+        rootNode = removeNode(rootNode, flightCrewMember);
     }
 
-    public FlightCrewMemberNode removeNodeWithNoChildren(FlightCrewMemberNode node) {
-        FlightCrewMemberNode parent = node.getParent();
-        if (parent != null) {
-            if (parent.getLeft() != null && parent.getLeft() == node) {
-                parent.setLeft(null);
-            } else if (parent.getRight() != null && parent.getRight() == node) {
-                parent.setRight(null);
-            }
-        } else if (rootNode != null && rootNode.equals(node)) {
-            rootNode = null;
+    public FlightCrewMemberNode removeNode(FlightCrewMemberNode root, FlightCrewMember flightCrewMember) {
+        double flightCrewMemberExperience = flightCrewMember.getWorkExperience();
+        if (root == null) {
+            return null;
         }
-        return null;
-    }
-
-    public FlightCrewMemberNode removeNodeWithOneChild(FlightCrewMemberNode node) {
-        FlightCrewMemberNode parent = node.getParent();
-        FlightCrewMemberNode leftChild = node.getLeft();
-        FlightCrewMemberNode rightChild = node.getRight();
-        FlightCrewMemberNode newNode;
-        if (leftChild != null) {
-            newNode = leftChild;
+        if (flightCrewMemberExperience < root.getValue()) {
+            root.setLeft(removeNode(root.getLeft(), flightCrewMember));
+        } else if (flightCrewMemberExperience > root.getValue()) {
+            root.setRight(removeNode(root.getRight(), flightCrewMember));
+        } else if (root.getLeft() == null && root.getRight() == null) {
+            root = null;
+        } else if (root.getLeft() == null) {
+            root = root.getRight();
+        } else if (root.getRight() == null) {
+            root = root.getLeft();
         } else {
-            newNode = rightChild;
+            removeNodeWithTwoChildren(root);
         }
-        if (parent != null) {
-            if (findIfNodeIsLeftOrRight(node, parent).equals("Left")) {
-                parent.setLeft(newNode);
-            } else {
-                parent.setRight(newNode);
-            }
-        } else {
-            newNode.setParent(null);
-            rootNode = newNode;
-        }
-        return newNode;
+        return root;
     }
 
-    public FlightCrewMemberNode removeNodeWithTwoChildren(FlightCrewMemberNode node) {
-        FlightCrewMemberNode successor;
-        successor = findSuccessor(node);
-        remove(successor);
-        swapNodesData(node, successor);
-        return successor;
-    }
-
-    private void swapNodesData(FlightCrewMemberNode node, FlightCrewMemberNode successor) {
-        FlightCrewMemberNode parent = node.getParent();
-        FlightCrewMemberNode left = node.getLeft();
-        FlightCrewMemberNode right = node.getRight();
-        if (left != null) {
-            left.setParent(successor);
-            successor.setLeft(left);
-        }
-        if (right != null) {
-            right.setParent(successor);
-            successor.setRight(right);
-        }
-        if (parent != null) {
-            if (findIfNodeIsLeftOrRight(node, parent).equals("Left")) {
-                parent.setLeft(successor);
-            } else {
-                parent.setRight(successor);
-            }
-            successor.setParent(parent);
-        } else {
-            successor.setParent(null);
-            rootNode = successor;
-        }
-    }
-
-    private String findIfNodeIsLeftOrRight(FlightCrewMemberNode node, FlightCrewMemberNode parent) {
-        if (parent.getLeft() == node) {
-            return "Left";
-        }
-        return "Right";
+    private void removeNodeWithTwoChildren(FlightCrewMemberNode node) {
+        FlightCrewMemberNode successor = findSuccessor(node);
+        node.setData(successor.getData());
+        node.setRight(removeNode(node.getRight(), successor.getData()));
     }
 
     public FlightCrewMemberNode findSuccessor(FlightCrewMemberNode node) {
@@ -136,13 +76,6 @@ public class FlightCrewMemberBST {
     public FlightCrewMemberNode findMin(FlightCrewMemberNode node) {
         while (node.getLeft() != null) {
             node = node.getLeft();
-        }
-        return node;
-    }
-
-    public FlightCrewMemberNode findMax(FlightCrewMemberNode node) {
-        while (node.getRight() != null) {
-            node = node.getRight();
         }
         return node;
     }
@@ -244,15 +177,11 @@ public class FlightCrewMemberBST {
 
         System.out.println(binarySearchTree3.toString());
 
-        binarySearchTree3.remove(binarySearchTree3.rootNode);
+        binarySearchTree3.remove(crewMemberTemp15);
 
         System.out.println(binarySearchTree3.toString());
 
-        binarySearchTree3.remove(binarySearchTree3.rootNode);
-
-        System.out.println(binarySearchTree3.toString());
-
-        binarySearchTree3.remove(binarySearchTree3.rootNode);
+        binarySearchTree3.remove(crewMemberTemp33);
 
         System.out.println(binarySearchTree3.toString());
 

@@ -12,6 +12,10 @@ public class FlightCrewMemberNode implements Node {
         this.data = data;
     }
 
+    public void setData(FlightCrewMember data) {
+        this.data = data;
+    }
+
     public void setParent(FlightCrewMemberNode parent) {
         this.parent = parent;
     }
@@ -62,7 +66,20 @@ public class FlightCrewMemberNode implements Node {
             right.printTree(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
 
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(getValue()).append("\n");
+        double parentValue = 0;
+        double leftValue = 0;
+        double rightValue = 0;
+        if (parent != null) {
+            parentValue = parent.getValue();
+        }
+        if (left != null) {
+            leftValue = left.getValue();
+        }
+        if (right != null) {
+            rightValue = right.getValue();
+        }
+
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(getValue()).append(" Parent: ").append(parentValue).append(" Left: ").append(leftValue).append(" Right: ").append(rightValue).append("\n");
 
         if(left != null) {
             left.printTree(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);

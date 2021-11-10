@@ -3,46 +3,6 @@ package ee.ttu.algoritmid.flights;
 
 public class AVLTree extends FlightCrewMemberBST {
 
-    @Override
-    public FlightCrewMemberNode insertNode(FlightCrewMemberNode root, FlightCrewMember flightCrewMember) {
-        System.out.println(flightCrewMember.getWorkExperience());
-        if (flightCrewMember.getWorkExperience() == 121.55123695269302) {
-            System.out.println(root.getValue());
-            System.out.println(rootNode.getValue());
-            System.out.println(flightCrewMember.getRole());
-            System.out.println(this.toString());
-        }
-        double flightCrewMemberExperience = flightCrewMember.getWorkExperience();
-        if (root == null) {
-            return new FlightCrewMemberNode(flightCrewMember);
-        } else if (flightCrewMemberExperience < root.getValue()) {
-            root.setLeft(insertNode(root.getLeft(), flightCrewMember));
-            root.getLeft().setParent(root);
-        } else if (flightCrewMemberExperience >= root.getValue()) {
-            root.setRight(insertNode(root.getRight(), flightCrewMember));
-            root.getRight().setParent(root);
-        }
-        root.updateNode();
-        return balance(root);
-    }
-
-    @Override
-    public void remove(FlightCrewMemberNode node) {
-        if (node != null) {
-            FlightCrewMemberNode leftChild = node.getLeft();
-            FlightCrewMemberNode rightChild = node.getRight();
-            FlightCrewMemberNode flightCrewMemberNode;
-            if (leftChild == null && rightChild == null) {
-                flightCrewMemberNode = removeNodeWithNoChildren(node);
-            } else if (leftChild != null && rightChild != null) {
-                flightCrewMemberNode = removeNodeWithTwoChildren(node);
-            } else {
-                flightCrewMemberNode = removeNodeWithOneChild(node);
-            }
-            balance(flightCrewMemberNode);
-        }
-    }
-
     private FlightCrewMemberNode rotateRight(FlightCrewMemberNode node) {
         FlightCrewMemberNode left = node.getLeft();
         FlightCrewMemberNode leftRight = left.getRight();

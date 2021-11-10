@@ -25,8 +25,9 @@ public class HW01 implements FlightCrewRegistrationSystem {
             addParticipantToWaitingList(participant);
             return null;
         }
-        removeCrewMembersFromWaitingList(pilot, copilot, flightAttendant);
-        return new CorrectFlightCrew(pilot.getData(), copilot.getData(), flightAttendant.getData());
+        FlightCrew flightCrew = new CorrectFlightCrew(pilot.getData(), copilot.getData(), flightAttendant.getData());
+        removeCrewMembersFromWaitingList(pilot.getData(), copilot.getData(), flightAttendant.getData());
+        return flightCrew;
     }
 
     @Override
@@ -86,8 +87,8 @@ public class HW01 implements FlightCrewRegistrationSystem {
         }
     }
 
-    private void removeCrewMembersFromWaitingList(FlightCrewMemberNode pilot, FlightCrewMemberNode copilot,
-                                                  FlightCrewMemberNode flightAttendant) {
+    private void removeCrewMembersFromWaitingList(FlightCrewMember pilot, FlightCrewMember copilot,
+                                                  FlightCrewMember flightAttendant) {
         pilotsAVLTree.remove(pilot);
         copilotsAVLTree.remove(copilot);
         flightAttendantAVLTree.remove(flightAttendant);
