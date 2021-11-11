@@ -64,6 +64,7 @@ public class AL05 {
                 String current = frontier.poll();
                 List<String> currentOnGraph = getGraph().get(current);
                 if (currentOnGraph.contains(goal)) {
+                    erdosNumbers.put(goal, erdosNumber);
                     break;
                 }
 
