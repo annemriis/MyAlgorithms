@@ -59,9 +59,9 @@ public class AL05 {
             Map<String, String> came_from = new HashMap<>();
             came_from.put("Paul Erdös", null);
             erdosNumbers.put("Paul Erdös", 0);
-            int erdosNumber = 1;
             while (!frontier.isEmpty()) {
                 String current = frontier.poll();
+                int erdosNumber = erdosNumbers.get(current) + 1;
                 List<String> currentOnGraph = getGraph().get(current);
                 if (currentOnGraph.contains(goal)) {
                     erdosNumbers.put(goal, erdosNumber);
@@ -75,7 +75,6 @@ public class AL05 {
                         came_from.put(coauthor, current);
                     }
                 }
-                erdosNumber += 1;
             }
             return erdosNumbers.getOrDefault(goal, -1);
         }
