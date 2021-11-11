@@ -59,6 +59,9 @@ public class AL05 {
             Map<String, String> came_from = new HashMap<>();
             came_from.put("Paul Erdös", null);
             erdosNumbers.put("Paul Erdös", 0);
+            if (goal.equals("Paul Erdös")) {
+                return 0;
+            }
             while (!frontier.isEmpty()) {
                 String current = frontier.poll();
                 int erdosNumber = erdosNumbers.get(current) + 1;
@@ -98,5 +101,20 @@ public class AL05 {
             graph.addEdge(co.getKey(), co.getValue());
         }
         return graph.breadthFirstSearch(scientist);
+    }
+
+    public static void main(String[] args) {
+        AL05 al05 = new AL05();
+        List<SimpleEntry<String, String>> coauthors = new ArrayList<>();
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Juhan", "Jaan"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Juhan", "Siiri"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Paul Erdös", "Juhan"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Jaan", "Kati"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Kati", "Paul Erdös"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Jaan", "Mati"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Jaan", "Urmas"));
+        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Urmas", "Erki"));
+
+        System.out.println(al05.buildGraphAndFindErdosNumber(coauthors, "Paul Erdös"));
     }
 }
