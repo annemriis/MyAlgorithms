@@ -102,19 +102,4 @@ public class AL05 {
         }
         return graph.breadthFirstSearch(scientist);
     }
-
-    public static void main(String[] args) {
-        AL05 al05 = new AL05();
-        List<SimpleEntry<String, String>> coauthors = new ArrayList<>();
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Juhan", "Jaan"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Juhan", "Siiri"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Paul Erdös", "Juhan"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Jaan", "Kati"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Kati", "Paul Erdös"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Jaan", "Mati"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Jaan", "Urmas"));
-        coauthors.add(new AbstractMap.SimpleEntry<String, String>("Urmas", "Erki"));
-
-        System.out.println(al05.buildGraphAndFindErdosNumber(coauthors, "Paul Erdös"));
-    }
 }
