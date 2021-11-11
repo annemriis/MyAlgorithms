@@ -55,10 +55,10 @@ public class AL05 {
          */
         public Integer breadthFirstSearch(String goal) {
             Queue<String> frontier = new LinkedList<>();
-            frontier.add("Paul Erdös");
+            frontier.add("Erdös");
             Map<String, String> came_from = new HashMap<>();
-            came_from.put("Paul Erdös", null);
-            erdosNumbers.put("Paul Erdös", 0);
+            came_from.put("Erdös", null);
+            erdosNumbers.put("Erdös", 0);
             int erdosNumber = 1;
             while (!frontier.isEmpty()) {
                 String current = frontier.poll();
