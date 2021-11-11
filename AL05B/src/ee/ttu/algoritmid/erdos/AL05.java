@@ -62,12 +62,12 @@ public class AL05 {
             int erdosNumber = 1;
             while (!frontier.isEmpty()) {
                 String current = frontier.poll();
-                List<String> currentOnGraph = AL05.this.graph.getGraph().get(current);
+                List<String> currentOnGraph = getGraph().get(current);
                 if (currentOnGraph.contains(goal)) {
                     break;
                 }
 
-                for (String coauthor: AL05.this.graph.getGraph().get(current)) {
+                for (String coauthor: getGraph().get(current)) {
                     if (!came_from.containsKey(coauthor)) {
                         frontier.add(coauthor);
                         erdosNumbers.put(coauthor, erdosNumber);
@@ -93,6 +93,7 @@ public class AL05 {
      */
     public Integer buildGraphAndFindErdosNumber(List<SimpleEntry<String, String>> coauthors,
                                                 String scientist) {
+        Graph graph = new Graph();
         for (SimpleEntry<String, String> co: coauthors) {
             graph.addEdge(co.getKey(), co.getValue());
         }
