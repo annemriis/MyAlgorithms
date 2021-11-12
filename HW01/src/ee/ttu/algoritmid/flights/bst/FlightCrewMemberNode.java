@@ -25,6 +25,7 @@ public class FlightCrewMemberNode implements Node {
         this.right = right;
     }
 
+    @Override
     public FlightCrewMember getData() {
         return data;
     }
