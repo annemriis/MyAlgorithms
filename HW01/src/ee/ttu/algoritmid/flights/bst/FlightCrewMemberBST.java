@@ -19,12 +19,6 @@ public class FlightCrewMemberBST implements BinarySearchTree {
         rootNode = insertNode(rootNode, flightCrewMember);
     }
 
-    /**
-     *
-     * @param root
-     * @param flightCrewMember
-     * @return
-     */
     public FlightCrewMemberNode insertNode(FlightCrewMemberNode root, FlightCrewMember flightCrewMember) {
         double flightCrewMemberExperience = flightCrewMember.getWorkExperience();
         if (root == null) {
@@ -42,12 +36,6 @@ public class FlightCrewMemberBST implements BinarySearchTree {
         rootNode = removeNode(rootNode, flightCrewMember);
     }
 
-    /**
-     *
-     * @param root
-     * @param flightCrewMember
-     * @return
-     */
     public FlightCrewMemberNode removeNode(FlightCrewMemberNode root, FlightCrewMember flightCrewMember) {
         double flightCrewMemberExperience = flightCrewMember.getWorkExperience();
         if (root == null) {
@@ -91,14 +79,7 @@ public class FlightCrewMemberBST implements BinarySearchTree {
         return node;
     }
 
-    /**
-     *
-     * @param node
-     * @param k1
-     * @param k2
-     * @param value
-     * @return
-     */
+    // Find element that is less at least by k1 but not smaller than value - k2.
     @Override
     public FlightCrewMemberNode findElementLessAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
@@ -119,14 +100,7 @@ public class FlightCrewMemberBST implements BinarySearchTree {
         return value - node.getValue() >= k1 && value - node.getValue() <= k2;
     }
 
-    /**
-     *
-     * @param node
-     * @param k1
-     * @param k2
-     * @param value
-     * @return
-     */
+    // Find element that is greater at least by k1 but not greater than value + k2.
     @Override
     public FlightCrewMemberNode findElementGreaterAtLeastByK1(FlightCrewMemberNode node, double k1, double k2, double value) {
         FlightCrewMemberNode element = null;
@@ -150,13 +124,10 @@ public class FlightCrewMemberBST implements BinarySearchTree {
     @Override
     public List<FlightCrewMemberNode> inorderTraversal(FlightCrewMemberNode root, List<FlightCrewMemberNode> inorder) {
         if (root != null) {
-            //
             if (root.getLeft() != null) {
                 inorderTraversal(root.getLeft(), inorder);
             }
-            //
             inorder.add(root);
-            //
             if (root.getRight() != null) {
                 inorderTraversal(root.getRight(), inorder);
             }

@@ -21,11 +21,7 @@ public class AVLTree extends FlightCrewMemberBST {
         return balance(node);
     }
 
-    /**
-     *
-     * @param node
-     * @return
-     */
+    // Rotate left heavy node to the right.
     private FlightCrewMemberNode rotateRight(FlightCrewMemberNode node) {
         FlightCrewMemberNode left = node.getLeft();
         FlightCrewMemberNode leftRight = left.getRight();
@@ -36,11 +32,7 @@ public class AVLTree extends FlightCrewMemberBST {
         return left;
     }
 
-    /**
-     *
-     * @param node
-     * @return
-     */
+    // Rotate right heavy node to the left.
     private FlightCrewMemberNode rotateLeft(FlightCrewMemberNode node) {
         FlightCrewMemberNode right = node.getRight();
         FlightCrewMemberNode rightLeft = right.getLeft();
@@ -51,11 +43,6 @@ public class AVLTree extends FlightCrewMemberBST {
         return right;
     }
 
-    /**
-     *
-     * @param node
-     * @return
-     */
     private FlightCrewMemberNode balance(FlightCrewMemberNode node) {
         if (node == null) {
             return null;
@@ -63,7 +50,6 @@ public class AVLTree extends FlightCrewMemberBST {
         int balance = node.calculateBalance();
         // Left heavy.
         if (balance < -1) {
-            //
             if (node.getLeft().calculateBalance() > 0) {
                 node.setLeft(rotateLeft(node.getLeft()));
             }
@@ -71,7 +57,6 @@ public class AVLTree extends FlightCrewMemberBST {
         }
         // Right heavy.
         if (balance > 1) {
-            //
             if (node.getRight().calculateBalance() < 0) {
                 node.setRight(rotateRight(node.getRight()));
             }

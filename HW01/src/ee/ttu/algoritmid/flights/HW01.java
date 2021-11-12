@@ -97,10 +97,6 @@ public class HW01 implements FlightCrewRegistrationSystem {
         flightAttendantAVLTree.remove(flightAttendant);
     }
 
-    /**
-     *
-     * @return
-     */
     private List<FlightCrewMember> mergeAVLTrees() {
         List<FlightCrewMember> waitingList = new ArrayList<>();
         List<FlightCrewMemberNode> pilots = pilotsAVLTree.inorderTraversal(pilotsAVLTree.getRootNode(), new ArrayList<>());
@@ -127,7 +123,7 @@ public class HW01 implements FlightCrewRegistrationSystem {
                 flightAttendant = flightAttendants.get(flightAttendantsIndex);
             }
 
-            //
+            // Sort flight crew members.
             FlightCrewMember flightCrewMember = flightCrewMemberWithSmallestExperience(pilot, copilot, flightAttendant).getData();
             if (flightCrewMember.getRole().equals(FlightCrewMember.Role.PILOT)) {
                 pilotsIndex += 1;
@@ -148,13 +144,7 @@ public class HW01 implements FlightCrewRegistrationSystem {
         return pilots.size() + copilots.size() + flightAttendants.size();
     }
 
-    /**
-     *
-     * @param pilot
-     * @param copilot
-     * @param flightAttendant
-     * @return
-     */
+    // Find the flight crew member with the smallest experience.
     private FlightCrewMemberNode flightCrewMemberWithSmallestExperience(FlightCrewMemberNode pilot,
                                                                         FlightCrewMemberNode copilot,
                                                                         FlightCrewMemberNode flightAttendant) {
@@ -172,13 +162,7 @@ public class HW01 implements FlightCrewRegistrationSystem {
         return pilot;
     }
 
-    /**
-     *
-     * @param pilot
-     * @param copilot
-     * @param flightAttendant
-     * @return
-     */
+    // Find the flight crew member with the smallest experience if one of the flight members is null.
     private FlightCrewMemberNode flightCrewMemberWithSmallestExperienceOneIsNull(FlightCrewMemberNode pilot,
                                                                                  FlightCrewMemberNode copilot,
                                                                                  FlightCrewMemberNode flightAttendant) {
