@@ -9,6 +9,9 @@ public class InterestingStamps {
         if (stampOptions.isEmpty()) {
                 throw new IllegalArgumentException();
             }
+        if (sum == 0) {
+            return new ArrayList<>();
+        }
         int[] optimalSolution = new int[sum + 1];
         int[] lastChosenMark = new int[sum + 1];
         int[] optimalInteresting = new int[sum + 1];
