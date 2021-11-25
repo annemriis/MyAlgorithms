@@ -19,7 +19,8 @@ public class InterestingStamps {
         for (int i = stampOptions.get(lastIndex); i < sum + 1; i++) {
             optimalSolution[i] = Integer.MAX_VALUE;
             optimalInteresting[i] = 0;
-            for (Integer stamp: stampOptions) {
+            for (int j = 0; j < stampOptions.size(); j++) {
+                Integer stamp = stampOptions.get(j);
                 if ((i >= stamp) && (optimalSolution[i] >= optimalSolution[i - stamp] + 1)) {
                     if (optimalSolution[i] > optimalSolution[i - stamp] + 1) {
                         optimalSolution[i] = optimalSolution[i - stamp] + 1;
