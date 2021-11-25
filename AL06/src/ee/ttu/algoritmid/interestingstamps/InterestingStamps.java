@@ -15,6 +15,7 @@ public class InterestingStamps {
         int[] optimalSolution = new int[sum + 1];
         int[] lastChosenMark = new int[sum + 1];
         int[] optimalInteresting = new int[sum + 1];
+        stampOptions = stampOptions.stream().filter(stamp -> stamp <= sum).collect(Collectors.toList());
         stampOptions.sort(Collections.reverseOrder());
         List<Integer> stamps = new ArrayList<>();
         int lastIndex = stampOptions.size() - 1;
@@ -61,5 +62,4 @@ public class InterestingStamps {
     private static boolean isInterestingStamp(Integer stamp) {
         return stamp != 1 && stamp % 10 != 0;
     }
-
 }
