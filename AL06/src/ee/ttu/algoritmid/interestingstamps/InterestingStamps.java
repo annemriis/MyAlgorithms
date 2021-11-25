@@ -14,7 +14,8 @@ public class InterestingStamps {
         int[] lastChosenMark = new int[sum + 1];
         stampOptions.sort(Collections.reverseOrder());
         List<Integer> stamps = new ArrayList<>();
-        for (int i = 0; i < sum + 1; i++) {
+        int lastIndex = stampOptions.size() - 1;
+        for (int i = stampOptions.get(lastIndex); i < sum + 1; i++) {
             optimalSolution[i] = Integer.MAX_VALUE;
             for (Integer stamp: stampOptions) {
                 if ((i >= stamp) && (optimalSolution[i] > optimalSolution[i - stamp] + 1)) {
