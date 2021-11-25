@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 public class InterestingStamps {
 
     public static List<Integer> findStamps(int sum, List<Integer> stampOptions) throws IllegalArgumentException {
-        if (stampOptions.isEmpty()) {
-                throw new IllegalArgumentException();
-            }
         int[] optimalSolution = new int[sum + 1];
         int[] lastChosenMark = new int[sum + 1];
         int[] optimalInteresting = new int[sum + 1];
         stampOptions.sort(Collections.reverseOrder());
         stampOptions = stampOptions.stream().filter(stamp -> stamp <= sum).collect(Collectors.toList());
+        if (stampOptions.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         List<Integer> stamps = new ArrayList<>();
         int lastIndex = stampOptions.size() - 1;
         for (int i = stampOptions.get(lastIndex); i < sum + 1; i++) {
