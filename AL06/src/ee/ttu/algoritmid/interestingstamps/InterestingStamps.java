@@ -3,25 +3,20 @@ package ee.ttu.algoritmid.interestingstamps;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InterestingStamps {
 
     public static List<Integer> findStamps(int sum, List<Integer> stampOptions) throws IllegalArgumentException {
         if (stampOptions.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
+                throw new IllegalArgumentException();
+            }
         int[] optimalSolution = new int[sum + 1];
         int[] lastChosenMark = new int[sum + 1];
         int[] optimalInteresting = new int[sum + 1];
         stampOptions.sort(Collections.reverseOrder());
-        stampOptions = stampOptions.stream().filter(stamp -> stamp <= sum).collect(Collectors.toList());
-        if (stampOptions.isEmpty()) {
-            return new ArrayList<>();
-        }
         List<Integer> stamps = new ArrayList<>();
         int lastIndex = stampOptions.size() - 1;
-        for (int i = stampOptions.get(lastIndex); i < sum + 1; i++) {
+        for (int i = sum; i > lastIndex; i--) {
             optimalSolution[i] = Integer.MAX_VALUE;
             optimalInteresting[i] = 0;
             for (Integer stamp: stampOptions) {
@@ -47,5 +42,16 @@ public class InterestingStamps {
 
     private static boolean isInterestingStamp(Integer stamp) {
         return stamp != 1 && stamp % 10 != 0;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Integer> stamps = new ArrayList<>();
+        stamps.add(1);
+        stamps.add(10);
+        stamps.add(24);
+        stamps.add(30);
+        stamps.add(33);
+        stamps.add(36);
+        System.out.println(findStamps(100, stamps));
     }
 }
