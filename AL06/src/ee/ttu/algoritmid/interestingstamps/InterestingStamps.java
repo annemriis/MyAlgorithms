@@ -32,7 +32,8 @@ public class InterestingStamps {
             set.addAll(heap);
         }
         List<Integer> setList = set.stream().sorted().collect(Collectors.toList());
-        for (Integer i: setList) {
+        for (int k = 0; k < setList.size(); k++) {
+            Integer i = setList.get(k);
             optimalSolution[i] = Integer.MAX_VALUE;
             optimalInteresting[i] = 0;
             for (int j = 0; j < stampOptions.size(); j++) {
