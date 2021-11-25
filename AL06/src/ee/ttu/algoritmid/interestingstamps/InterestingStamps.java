@@ -7,6 +7,9 @@ import java.util.List;
 public class InterestingStamps {
 
     public static List<Integer> findStamps(int sum, List<Integer> stampOptions) throws IllegalArgumentException {
+        if (stampOptions.isEmpty()) {
+                throw new IllegalArgumentException();
+            }
         int[] optimalSolution = new int[sum + 1];
         int[] lastChosenMark = new int[sum + 1];
         stampOptions.sort(Collections.reverseOrder());
