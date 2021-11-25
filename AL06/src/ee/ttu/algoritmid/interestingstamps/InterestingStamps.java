@@ -62,14 +62,4 @@ public class InterestingStamps {
         return stamp != 1 && stamp % 10 != 0;
     }
 
-    public static void main(String[] args) {
-        ArrayList<Integer> stamps = new ArrayList<>();
-        stamps.add(1);
-        stamps.add(10);
-        stamps.add(24);
-        stamps.add(30);
-        stamps.add(33);
-        stamps.add(36);
-        System.out.println(findStamps(100, stamps));
-    }
 }
