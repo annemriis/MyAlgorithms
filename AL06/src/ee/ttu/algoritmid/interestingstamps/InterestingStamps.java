@@ -1,8 +1,7 @@
 package ee.ttu.algoritmid.interestingstamps;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InterestingStamps {
 
@@ -15,15 +14,24 @@ public class InterestingStamps {
         int[] optimalInteresting = new int[sum + 1];
         stampOptions.sort(Collections.reverseOrder());
         List<Integer> stamps = new ArrayList<>();
-        int solution = 0;
-        int nextSolution = sum;
         int lastIndex = stampOptions.size() - 1;
-        for (int i = sum; i >= stampOptions.get(lastIndex); i--) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        heap.addAll(stampOptions);
+        Set<Integer> set = new HashSet<>(heap);
+        while (!heap.isEmpty()) {
+            int minSum = heap.poll();
+            for (Integer number: set) {
+                int numbersSum = number + minSum;
+                if (numbersSum <= sum && !set.contains(numbersSum)) {
+                    heap.add(numbersSum);
+                }
+            }
+            set.addAll(heap);
+        }
+        List<Integer> setList = set.stream().sorted().collect(Collectors.toList());
+        for (Integer i: setList) {
             optimalSolution[i] = Integer.MAX_VALUE;
             optimalInteresting[i] = 0;
-            if (solution == sum) {
-                break;
-            }
             for (int j = 0; j < stampOptions.size(); j++) {
                 Integer stamp = stampOptions.get(j);
                 if ((i >= stamp) && (optimalSolution[i] >= optimalSolution[i - stamp] + 1)) {
@@ -36,10 +44,6 @@ public class InterestingStamps {
                         lastChosenMark[i] = stamp;
                     }
                 }
-            }
-            if (i == nextSolution) {
-                solution += lastChosenMark[i];
-                nextSolution = lastChosenMark[i];
             }
         }
         int n = sum;
@@ -62,7 +66,6 @@ public class InterestingStamps {
         stamps.add(30);
         stamps.add(33);
         stamps.add(36);
-        stamps.add(1000);
         System.out.println(findStamps(100, stamps));
     }
 }
