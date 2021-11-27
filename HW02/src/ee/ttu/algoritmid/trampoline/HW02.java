@@ -6,7 +6,17 @@ public class HW02 implements TrampolineCenter {
 
     @Override
     public Result play(Trampoline[][] map) {
-        PriorityQueue<Trampoline> frontier = new PriorityQueue<>(Comparator.comparingInt(Trampoline::getJumpForce));
+        PriorityQueue<Trampoline> frontier = new PriorityQueue<>(new Comparator<Trampoline>() {
+            @Override
+            public int compare(Trampoline o1, Trampoline o2) {
+                if (o1.getType().equals(Trampoline.Type.WITH_FINE)) {
+                    return 1;
+                } else if (o2.getType().equals(Trampoline.Type.WITH_FINE)) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
         Trampoline NWTrampoline = map[0][0];
         Integer[] currentCoordinates = new Integer[]{0, 0};
         Integer[] startCoordinates = new Integer[]{0, 0};
@@ -33,7 +43,7 @@ public class HW02 implements TrampolineCenter {
 
             Trampoline[] neighbours = findNeighbours(map, currentCoordinates, current);
             for (Trampoline next: neighbours) {
-                int neighbourCost = calculateTrampolineFine(next);
+                int neighbourCost = -calculateTrampolineFine(next);
                 int newCost = costSoFar.get(current) + neighbourCost;
                 if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
                     Integer[] coordinates = findTrampolineCoordinates(map, next, current, currentCoordinates);
