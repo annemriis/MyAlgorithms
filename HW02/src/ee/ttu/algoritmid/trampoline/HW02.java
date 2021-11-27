@@ -6,16 +6,13 @@ public class HW02 implements TrampolineCenter {
 
     @Override
     public Result play(Trampoline[][] map) {
-        PriorityQueue<Trampoline> frontier = new PriorityQueue<>(new Comparator<Trampoline>() {
-            @Override
-            public int compare(Trampoline o1, Trampoline o2) {
-                if (o1.getType().equals(Trampoline.Type.WITH_FINE)) {
-                    return 1;
-                } else if (o2.getType().equals(Trampoline.Type.WITH_FINE)) {
-                    return -1;
-                }
-                return 0;
+        PriorityQueue<Trampoline> frontier = new PriorityQueue<>((o1, o2) -> {
+            if (o1.getType().equals(Trampoline.Type.WITH_FINE)) {
+                return 1;
+            } else if (o2.getType().equals(Trampoline.Type.WITH_FINE)) {
+                return -1;
             }
+            return 0;
         });
         Trampoline NWTrampoline = map[0][0];
         Integer[] currentCoordinates = new Integer[]{0, 0};
@@ -70,7 +67,7 @@ public class HW02 implements TrampolineCenter {
         Collections.reverse(path);
         Collections.reverse(pathWithTrampolines);
 
-        return convertPathToResult(path, pathWithTrampolines);
+        return convertPathToResult(path, pathWithTrampolines, map);
     }
 
     private Trampoline[] findNeighbours(Trampoline[][] map, Integer[] coordinates, Trampoline trampoline) {
@@ -115,8 +112,10 @@ public class HW02 implements TrampolineCenter {
         int neighbourJumpForce = neighbourTrampoline.getJumpForce();
         Trampoline eastNeighbour = findTrampolineNeighbour(map, neighbourCoordinates, neighbourTrampoline, "east");
         if (eastNeighbour != null && eastNeighbour.equals(trampoline)) {
+            neighbourJumpForce = fixTrampolineJumpForceEast(map, neighbourTrampoline, neighbourCoordinates);
             return new Integer[] {x + neighbourJumpForce, y};
         } else {
+            neighbourJumpForce = fixTrampolineJumpForceSouth(map, neighbourTrampoline, neighbourCoordinates);
             return new Integer[] {x, y + neighbourJumpForce};
         }
     }
@@ -126,15 +125,17 @@ public class HW02 implements TrampolineCenter {
         int y = coordinates[1];
         int mapLength = map.length - 1;
         int mapWidth = map[0].length - 1;
-        int jumpForce = trampoline.getJumpForce();
+        int jumpForce;
         if (quarter.equals("east")) {
             // Pooleli
+            jumpForce = fixTrampolineJumpForceEast(map, trampoline, coordinates);
             int neighbourX = x + jumpForce;
             if (neighbourX <= mapWidth) {  // Find neighbour from east.
                 return map[y][neighbourX];
             }
         } else if (quarter.equals("south")) {
             // Pooleli
+            jumpForce = fixTrampolineJumpForceSouth(map, trampoline, coordinates);
             int neighbourY = y + jumpForce;
             if (neighbourY <= mapLength) {  // Find neighbour from south.
                 return map[neighbourY][x];
@@ -143,7 +144,43 @@ public class HW02 implements TrampolineCenter {
         return null;
     }
 
-    private Result convertPathToResult(List<Integer[]> path, List<Trampoline> pathWithTrampolines) {
+    private int fixTrampolineJumpForceEast(Trampoline[][] map, Trampoline trampoline, Integer[] coordinates) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int mapWidth = map[0].length;
+        int jumpForce = trampoline.getJumpForce();
+        for (int i = jumpForce; i > 0; i--) {
+            int neighbourX = x + i;
+            if (neighbourX < mapWidth) {
+                if (isWall(map, neighbourX, y)) {
+                    return i - 1;
+                }
+            }
+        }
+        return jumpForce;
+    }
+
+    private int fixTrampolineJumpForceSouth(Trampoline[][] map, Trampoline trampoline, Integer[] coordinates) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int mapLength = map.length;
+        int jumpForce = trampoline.getJumpForce();
+        for (int i = jumpForce; i > 0; i--) {
+            int neighbourY = y + i;
+            if (neighbourY < mapLength) {
+                if (isWall(map, x, neighbourY)) {
+                    return i - y;
+                }
+            }
+        }
+        return jumpForce;
+    }
+
+    private boolean isWall(Trampoline[][] map, Integer x, Integer y) {
+        return map[y][x].getType().equals(Trampoline.Type.WALL);
+    }
+
+    private Result convertPathToResult(List<Integer[]> path, List<Trampoline> pathWithTrampolines, Trampoline[][] map) {
         List<String> pathString = new ArrayList<>();
         int totalFine = 0;
         for (int i = 0; i < path.size() - 1; i++) {
@@ -153,8 +190,10 @@ public class HW02 implements TrampolineCenter {
             Integer[] nextCoordinates = path.get(i + 1);
             totalFine += calculateTrampolineFine(trampoline);
             if (nextCoordinates[0] > coordinates[0]) {
+                jumpForce = fixTrampolineJumpForceEast(map, trampoline, coordinates);
                 pathString.add("E" + jumpForce);
             } else if (nextCoordinates[1] > coordinates[1]) {
+                jumpForce = fixTrampolineJumpForceSouth(map, trampoline, coordinates);
                 pathString.add("S" + jumpForce);
             }
         }
