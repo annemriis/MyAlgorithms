@@ -94,7 +94,7 @@ public class TrampolineData {
     public static int calculateTrampolineFine(Trampoline trampoline) {
         Trampoline.Type type = trampoline.getType();
         if (type.equals(Trampoline.Type.WITH_FINE)) {
-            return -trampoline.getJumpForce();
+            return trampoline.getJumpForce();
         }
         return 0;
     }

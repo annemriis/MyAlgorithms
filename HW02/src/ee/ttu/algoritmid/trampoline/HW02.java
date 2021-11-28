@@ -46,7 +46,7 @@ public class HW02 implements TrampolineCenter {
 
             Trampoline[] neighbours = current.findNeighbours(map);
             for (Trampoline next: neighbours) {
-                int neighbourCost = TrampolineData.calculateTrampolineFine(next);
+                int neighbourCost = -TrampolineData.calculateTrampolineFine(next);
                 int newCost = costSoFar.get(current.getTrampoline()) + neighbourCost + 1;
                 if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
                     int[] coordinates = findTrampolineCoordinates(map, next, current);
