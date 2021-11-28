@@ -9,9 +9,9 @@ public class InterestingStamps {
         if (stampOptions.isEmpty()) {
                 throw new IllegalArgumentException();
         }
-        Map<Integer, Integer> optimalSolution = new HashMap<>();
-        Map<Integer, Integer> lastChosenMark = new HashMap<>();
-        Map<Integer, Integer> optimalInteresting = new HashMap<>();
+        int[] optimalSolution = new int[sum + 1];
+        int[] lastChosenMark = new int[sum + 1];
+        int[] optimalInteresting = new int[sum + 1];
         Collections.reverse(stampOptions);
         stampOptions = stampOptions.stream().filter(stamp -> stamp <= sum).collect(Collectors.toList());
         if (stampOptions.isEmpty()) {
@@ -20,30 +20,41 @@ public class InterestingStamps {
         List<Integer> stamps = new ArrayList<>();
         int lastIndex = stampOptions.size() - 1;
         for (int i = stampOptions.get(lastIndex); i < sum + 1; i++) {
-            optimalSolution.put(i, Integer.MAX_VALUE);
-            optimalInteresting.put(i, 0);
+            optimalSolution[i] = Integer.MAX_VALUE;
+            optimalInteresting[i] = 0;
             for (Integer stamp: stampOptions) {
-                if ((i >= stamp) && (optimalSolution.get(i) >= optimalSolution.getOrDefault(i - stamp, 0) + 1)) {
-                    if (optimalSolution.get(i) > optimalSolution.getOrDefault(i - stamp, 0) + 1) {
-                        optimalSolution.put(i, optimalSolution.getOrDefault(i - stamp, 0) + 1);
-                        lastChosenMark.put(i, stamp);
-                    } else if (isInterestingStamp(stamp) && optimalInteresting.get(i) < optimalInteresting.getOrDefault(i - stamp, 0) + 1) {
-                        optimalInteresting.put(i, optimalInteresting.getOrDefault(i - stamp, 0) + 1);
-                        optimalSolution.put(i, optimalSolution.getOrDefault(i - stamp, 0) + 1);
-                        lastChosenMark.put(i, stamp);
+                if ((i >= stamp) && (optimalSolution[i] >= optimalSolution[i - stamp] + 1)) {
+                    if (optimalSolution[i] > optimalSolution[i - stamp] + 1) {
+                        optimalSolution[i] = optimalSolution[i - stamp] + 1;
+                        lastChosenMark[i] = stamp;
+                    } else if (isInterestingStamp(stamp) && optimalInteresting[i] < optimalInteresting[i - stamp] + 1) {
+                        optimalInteresting[i] = optimalInteresting[i - stamp] + 1;
+                        optimalSolution[i] = optimalSolution[i - stamp] + 1;
+                        lastChosenMark[i] = stamp;
                     }
                 }
             }
         }
         int n = sum;
         while (n > 0) {
-            stamps.add(lastChosenMark.get(n));
-            n -= lastChosenMark.get(n);
+            stamps.add(lastChosenMark[n]);
+            n -= lastChosenMark[n];
         }
         return stamps;
     }
 
     private static boolean isInterestingStamp(Integer stamp) {
         return stamp != 1 && stamp % 10 != 0;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Integer> stamps = new ArrayList<>();
+        stamps.add(1);
+        stamps.add(10);
+        stamps.add(24);
+        stamps.add(30);
+        stamps.add(33);
+        stamps.add(36);
+        System.out.println(findStamps(100, stamps));
     }
 }
