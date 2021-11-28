@@ -8,37 +8,21 @@ public class InterestingStamps {
     public static List<Integer> findStamps(int sum, List<Integer> stampOptions) throws IllegalArgumentException {
         if (stampOptions.isEmpty()) {
                 throw new IllegalArgumentException();
-            }
-        if (sum == 0) {
-            return new ArrayList<>();
         }
         int[] optimalSolution = new int[sum + 1];
         int[] lastChosenMark = new int[sum + 1];
         int[] optimalInteresting = new int[sum + 1];
+        Collections.reverse(stampOptions);
         stampOptions = stampOptions.stream().filter(stamp -> stamp <= sum).collect(Collectors.toList());
-        stampOptions.sort(Collections.reverseOrder());
+        if (stampOptions.isEmpty()) {
+            return new ArrayList<>();
+        }
         List<Integer> stamps = new ArrayList<>();
         int lastIndex = stampOptions.size() - 1;
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
-        heap.addAll(stampOptions);
-        Set<Integer> set = new HashSet<>(heap);
-        while (!heap.isEmpty()) {
-            int minSum = heap.poll();
-            for (Integer number: set) {
-                int numbersSum = number + minSum;
-                if (numbersSum <= sum && !set.contains(numbersSum)) {
-                    heap.add(numbersSum);
-                }
-            }
-            set.addAll(heap);
-        }
-        List<Integer> setList = set.stream().sorted().collect(Collectors.toList());
-        for (int k = 0; k < setList.size(); k++) {
-            Integer i = setList.get(k);
+        for (int i = stampOptions.get(lastIndex); i < sum + 1; i++) {
             optimalSolution[i] = Integer.MAX_VALUE;
             optimalInteresting[i] = 0;
-            for (int j = 0; j < stampOptions.size(); j++) {
-                Integer stamp = stampOptions.get(j);
+            for (Integer stamp: stampOptions) {
                 if ((i >= stamp) && (optimalSolution[i] >= optimalSolution[i - stamp] + 1)) {
                     if (optimalSolution[i] > optimalSolution[i - stamp] + 1) {
                         optimalSolution[i] = optimalSolution[i - stamp] + 1;
