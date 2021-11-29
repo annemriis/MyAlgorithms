@@ -9,13 +9,11 @@ public class TrampolineData {
     private int jumpForceEast = Integer.MIN_VALUE;
     private int jumpForceSouth = Integer.MIN_VALUE;
     private int fine;
-    private Trampoline[] neighbours;
+    private TrampolineData[] neighbours;
 
     // Poolik.
-    public TrampolineData(Trampoline trampoline, int x, int y, Trampoline[][] map) {
+    public TrampolineData(Trampoline trampoline) {
         this.trampoline = trampoline;
-        this.x = x;
-        this.y = y;
         this.fine = calculateTrampolineFine(trampoline);
     }
 
@@ -29,6 +27,11 @@ public class TrampolineData {
 
     public int getY() {
         return y;
+    }
+
+    public void setCoordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int[] getCoordinates() {
@@ -53,36 +56,38 @@ public class TrampolineData {
         return fine;
     }
 
-    public Trampoline[] getNeighbours(Trampoline[][] map) {
+    public TrampolineData[] getNeighbours(Trampoline[][] map) {
         if (neighbours == null) {
-            neighbours = findNeighbours(map);
+            findNeighbours(map);
         }
         return neighbours;
     }
 
     // Valmis? Poolik.
-    public Trampoline[] findNeighbours(Trampoline[][] map) {
-        neighbours = new Trampoline[6];
+    public void findNeighbours(Trampoline[][] map) {
+        neighbours = new TrampolineData[6];
         // Find east neighbours.
-        Trampoline eastNeighbour = findTrampolineNeighbour(map, "east", 0);
+        TrampolineData eastNeighbour = findTrampolineNeighbour(map, "east", 0);
         // Find neighbours for +- version.
-        Trampoline eastNeighbourPlus1 = findTrampolineNeighbour(map, "east", 1);
-        Trampoline eastNeighbourMinus1 = findTrampolineNeighbour(map, "east", -1);
+        TrampolineData eastNeighbourPlus1 = findTrampolineNeighbour(map, "east", 1);
+        TrampolineData eastNeighbourMinus1 = findTrampolineNeighbour(map, "east", -1);
+
         // Find south neighbours.
-        Trampoline southNeighbour = findTrampolineNeighbour(map, "south", 0);
-        Trampoline southNeighbourPlus1 = findTrampolineNeighbour(map, "south", 1);
-        Trampoline southNeighbourMinus1 = findTrampolineNeighbour(map, "south", -1);
+        TrampolineData southNeighbour = findTrampolineNeighbour(map, "south", 0);
+        TrampolineData southNeighbourPlus1 = findTrampolineNeighbour(map, "south", 1);
+        TrampolineData southNeighbourMinus1 = findTrampolineNeighbour(map, "south", -1);
+
+        // Add neighbours to the neighbours array;
         neighbours[0] = eastNeighbour;
         neighbours[1] = southNeighbour;
         neighbours[2] = eastNeighbourPlus1;
         neighbours[3] = southNeighbourPlus1;
         neighbours[4] = eastNeighbourMinus1;
         neighbours[5] = southNeighbourMinus1;
-        return neighbours;
     }
 
     // Täpsustused.
-    public Trampoline findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
+    public TrampolineData findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
         int mapLength = map.length - 1;
         int mapWidth = map[0].length - 1;
 
@@ -90,13 +95,17 @@ public class TrampolineData {
             int jumpForce = getJumpForceEast(map);
             int neighbourX = x + jumpForce + extraForce;
             if (neighbourX <= mapWidth && neighbourX >= 0) {  // Find neighbour from the east.
-                return map[y][neighbourX];
+                TrampolineData neighbourData = new TrampolineData(map[y][neighbourX]);
+                neighbourData.setCoordinates(neighbourX, y);
+                return neighbourData;
             }
         } else if (quarter.equals("south")) {
             int jumpForce = getJumpForceSouth(map);
             int neighbourY = y + jumpForce + extraForce;
             if (neighbourY <= mapLength && neighbourY >= 0) {  // Find neighbour from the south.
-                return map[neighbourY][x];
+                TrampolineData neighbourData = new TrampolineData(map[neighbourY][x]);
+                neighbourData.setCoordinates(x, neighbourY);
+                return neighbourData;
             }
         }
         return null;

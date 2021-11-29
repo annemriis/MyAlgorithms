@@ -10,7 +10,7 @@ public class HW02 implements TrampolineCenter {
         int[] currentCoordinates;
         int[] finishCoordinates = findFinishCoordinates(map);
         HashMap<TrampolineData, TrampolineData> cameFrom = new HashMap<>();
-        HashMap<Trampoline, Integer> costSoFar = new HashMap<>();
+        HashMap<TrampolineData, Integer> costSoFar = new HashMap<>();
 
         PriorityQueue<TrampolineData> frontier = new PriorityQueue<>((o1, o2) -> {
 
@@ -21,20 +21,21 @@ public class HW02 implements TrampolineCenter {
                 return -1;
 
             // If not then check if trampoline has a larger cost so far.
-            } else if (costSoFar.get(o1.getTrampoline()) > costSoFar.get(o2.getTrampoline())) {
+            } else if (costSoFar.get(o1) > costSoFar.get(o2)) {
                 return 1;
-            } else if ((costSoFar.get(o2.getTrampoline()) > costSoFar.get(o1.getTrampoline()))) {
+            } else if ((costSoFar.get(o2) > costSoFar.get(o1))) {
                 return -1;
             }
             return 0;
         });
 
-        // Add start.
         // Creat new TrampolineData instance, where Trampoline and coordinates are stored.
-        TrampolineData NWTrampolineData = new TrampolineData(NWTrampoline, 0, 0, map);
+        TrampolineData NWTrampolineData = new TrampolineData(NWTrampoline);
+        NWTrampolineData.setCoordinates(0, 0);
         TrampolineData current = NWTrampolineData;
+        // Add start.
         cameFrom.put(NWTrampolineData, null);
-        costSoFar.put(NWTrampoline, 0);
+        costSoFar.put(NWTrampolineData, 0);
         frontier.add(NWTrampolineData);  // Add start to the queue.
 
         // Find path.
@@ -46,20 +47,18 @@ public class HW02 implements TrampolineCenter {
                 break;
             }
 
-            Trampoline[] neighbours = current.getNeighbours(map);
-            for (Trampoline next: neighbours) {
-                if (next == null || next.getType().equals(Trampoline.Type.WALL)) {
+            TrampolineData[] neighbours = current.getNeighbours(map);
+            for (TrampolineData next: neighbours) {
+                if (next == null || next.getTrampoline().getType().equals(Trampoline.Type.WALL)) {
                     continue;
                 }
                 // Täpsustada.
-                int neighbourCost = -TrampolineData.calculateTrampolineFine(next);
-                int newCost = costSoFar.get(current.getTrampoline()) + neighbourCost + 1;
+                int neighbourCost = -TrampolineData.calculateTrampolineFine(next.getTrampoline());
+                int newCost = costSoFar.get(current) + neighbourCost + 1;
                 if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
-                    int[] coordinates = findTrampolineCoordinates(map, next, current);
-                    TrampolineData nextTrampolineData = new TrampolineData(next, coordinates[0], coordinates[1], map);
                     costSoFar.put(next, newCost);
-                    cameFrom.put(nextTrampolineData, current);
-                    frontier.add(nextTrampolineData);
+                    cameFrom.put(next, current);
+                    frontier.add(next);
                 }
             }
         }
@@ -86,36 +85,6 @@ public class HW02 implements TrampolineCenter {
         int x = map[0].length - 1;
         int y = map.length - 1;
         return new int[] {x, y};
-    }
-
-    // Poolik. Täpsustused. Lisada naabrid kohe listi.
-    private int[] findTrampolineCoordinates(Trampoline[][] map, Trampoline trampoline, TrampolineData neighbourTrampoline) {
-        int x = neighbourTrampoline.getX();
-        int y = neighbourTrampoline.getY();
-        Trampoline eastNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "east", 0);
-        Trampoline eastNeighbourPlus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", 1);
-        Trampoline eastNeighbourMinus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", -1);
-        Trampoline southNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "south", 0);
-        Trampoline southNeighbourPlus1 = neighbourTrampoline.findTrampolineNeighbour(map, "south", 1);
-        if (eastNeighbour != null && eastNeighbour.equals(trampoline)) {
-            int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast(map);
-            return new int[] {x + neighbourJumpForceEast, y};
-        } else if (eastNeighbourPlus1 != null && eastNeighbourPlus1.equals(trampoline)) {
-            int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast(map) + 1;
-            return new int[] {x + neighbourJumpForceEast, y};
-        } else if (eastNeighbourMinus1 != null && eastNeighbourMinus1.equals(trampoline)) {
-            int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast(map) - 1;
-            return new int[] {x + neighbourJumpForceEast, y};
-        } else if (southNeighbour != null && southNeighbour.equals(trampoline)) {
-            int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth(map);
-            return new int[] {x, y + neighbourJumpForceSouth};
-        } else if (southNeighbourPlus1 != null && southNeighbourPlus1.equals(trampoline)) {
-            int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth(map) + 1;
-            return new int[] {x, y + neighbourJumpForceSouth};
-        } else {
-            int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth(map) - 1;
-            return new int[] {x, y + neighbourJumpForceSouth};
-        }
     }
 
     /**
