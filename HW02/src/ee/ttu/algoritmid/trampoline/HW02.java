@@ -81,9 +81,17 @@ public class HW02 implements TrampolineCenter {
     private int[] findTrampolineCoordinates(Trampoline[][] map, Trampoline trampoline, TrampolineData neighbourTrampoline) {
         int x = neighbourTrampoline.getX();
         int y = neighbourTrampoline.getY();
-        Trampoline eastNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "east");
+        Trampoline eastNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "east", 0);
+        Trampoline eastNeighbourPlus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", 1);
+        Trampoline eastNeighbourMinus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", -1);
         if (eastNeighbour != null && eastNeighbour.equals(trampoline)) {
             int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast();
+            return new int[] {x + neighbourJumpForceEast, y};
+        } if (eastNeighbourPlus1 != null && eastNeighbourPlus1.equals(trampoline)) {
+            int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast() + 1;
+            return new int[] {x + neighbourJumpForceEast, y};
+        } if (eastNeighbourMinus1 != null && eastNeighbourMinus1.equals(trampoline)) {
+            int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast() - 1;
             return new int[] {x + neighbourJumpForceEast, y};
         } else {
             int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth();
@@ -91,10 +99,15 @@ public class HW02 implements TrampolineCenter {
         }
     }
 
+    private int calculateJumpForce(int coordinate, int nextCoordinate) {
+        return nextCoordinate - coordinate;
+    }
+
     // Valmis.
     private Result convertPathToResult(List<TrampolineData> path, Trampoline[][] map) {
         List<String> pathString = new ArrayList<>();
         int totalFine = 0;
+        // Path is in reverse order.
         for (int i = path.size() - 1; i > 0; i--) {
 
             TrampolineData trampolineData = path.get(i);
@@ -105,10 +118,10 @@ public class HW02 implements TrampolineCenter {
             totalFine += trampolineData.getFine();
 
             if (nextCoordinates[0] > coordinates[0]) {  // If next is to the right from current, then next is in the east.
-                jumpForce = trampolineData.getJumpForceEast();
+                jumpForce = calculateJumpForce(coordinates[0], nextCoordinates[0]);
                 pathString.add("E" + jumpForce);
             } else if (nextCoordinates[1] > coordinates[1]) {  // If next is to the left from current, then next is in the south.
-                jumpForce = trampolineData.getJumpForceSouth();
+                jumpForce = calculateJumpForce(coordinates[1], nextCoordinates[1]);
                 pathString.add("S" + jumpForce);
             }
         }

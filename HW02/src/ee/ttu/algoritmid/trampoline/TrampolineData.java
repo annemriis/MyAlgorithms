@@ -9,6 +9,7 @@ public class TrampolineData {
     private int jumpForceSouth;
     private int fine;
     private Trampoline[] neighbours;
+    private int finalJumpForce;
 
     public TrampolineData(Trampoline trampoline, int x, int y, Trampoline[][] map) {
         this.trampoline = trampoline;
@@ -48,29 +49,40 @@ public class TrampolineData {
     }
 
     public Trampoline[] findNeighbours(Trampoline[][] map) {
-        Trampoline[] neighbours = new Trampoline[2];
-        Trampoline eastNeighbour = findTrampolineNeighbour(map, "east");
-        Trampoline southNeighbour = findTrampolineNeighbour(map, "south");
+        Trampoline[] neighbours = new Trampoline[6];
+        // Find east neighbours.
+        Trampoline eastNeighbour = findTrampolineNeighbour(map, "east", 0);
+        // Find neighbours for +- version.
+        Trampoline eastNeighbourPlus1 = findTrampolineNeighbour(map, "east", 1);
+        Trampoline eastNeighbourMinus1 = findTrampolineNeighbour(map, "east", -1);
+        // Find south neighbours.
+        Trampoline southNeighbour = findTrampolineNeighbour(map, "south", 0);
+        Trampoline southNeighbourPlus1 = findTrampolineNeighbour(map, "south", 1);
+        Trampoline southNeighbourMinus1 = findTrampolineNeighbour(map, "south", -1);
         neighbours[0] = eastNeighbour;
         neighbours[1] = southNeighbour;
+        neighbours[2] = eastNeighbourPlus1;
+        neighbours[3] = southNeighbourPlus1;
+        neighbours[4] = eastNeighbourMinus1;
+        neighbours[5] = southNeighbourMinus1;
         return fixNeighboursArray(neighbours);
     }
 
-    public Trampoline findTrampolineNeighbour(Trampoline[][] map, String quarter) {
+    public Trampoline findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
         int mapLength = map.length - 1;
         int mapWidth = map[0].length - 1;
         int jumpForce;
         if (quarter.equals("east")) {
             // Pooleli
             jumpForce = fixTrampolineJumpForceEast(map);
-            int neighbourX = x + jumpForce;
+            int neighbourX = x + jumpForce + extraForce;
             if (neighbourX <= mapWidth) {  // Find neighbour from east.
                 return map[y][neighbourX];
             }
         } else if (quarter.equals("south")) {
             // Pooleli
             jumpForce = fixTrampolineJumpForceSouth(map);
-            int neighbourY = y + jumpForce;
+            int neighbourY = y + jumpForce + extraForce;
             if (neighbourY <= mapLength) {  // Find neighbour from south.
                 return map[neighbourY][x];
             }
