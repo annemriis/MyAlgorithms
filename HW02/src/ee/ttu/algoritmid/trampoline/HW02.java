@@ -30,8 +30,7 @@ public class HW02 implements TrampolineCenter {
         });
 
         // Creat new TrampolineData instance, where Trampoline and coordinates are stored.
-        TrampolineData NWTrampolineData = new TrampolineData(NWTrampoline);
-        NWTrampolineData.setCoordinates(0, 0);
+        TrampolineData NWTrampolineData = new TrampolineData(NWTrampoline, 0, 0);
         TrampolineData current = NWTrampolineData;
         // Add start.
         cameFrom.put(NWTrampolineData, null);

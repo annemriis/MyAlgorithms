@@ -12,8 +12,10 @@ public class TrampolineData {
     private TrampolineData[] neighbours;
 
     // Poolik.
-    public TrampolineData(Trampoline trampoline) {
+    public TrampolineData(Trampoline trampoline, int x, int y) {
         this.trampoline = trampoline;
+        this.x = x;
+        this.y = y;
     }
 
     public Trampoline getTrampoline() {
@@ -26,11 +28,6 @@ public class TrampolineData {
 
     public int getY() {
         return y;
-    }
-
-    public void setCoordinates(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 
     public int[] getCoordinates() {
@@ -97,16 +94,14 @@ public class TrampolineData {
             int jumpForce = getJumpForceEast(map);
             int neighbourX = x + jumpForce + extraForce;
             if (neighbourX <= mapWidth && neighbourX >= 0) {  // Find neighbour from the east.
-                TrampolineData neighbourData = new TrampolineData(map[y][neighbourX]);
-                neighbourData.setCoordinates(neighbourX, y);
+                TrampolineData neighbourData = new TrampolineData(map[y][neighbourX], neighbourX, y);
                 return neighbourData;
             }
         } else if (quarter.equals("south")) {
             int jumpForce = getJumpForceSouth(map);
             int neighbourY = y + jumpForce + extraForce;
             if (neighbourY <= mapLength && neighbourY >= 0) {  // Find neighbour from the south.
-                TrampolineData neighbourData = new TrampolineData(map[neighbourY][x]);
-                neighbourData.setCoordinates(x, neighbourY);
+                TrampolineData neighbourData = new TrampolineData(map[neighbourY][x], x, neighbourY);
                 return neighbourData;
             }
         }
