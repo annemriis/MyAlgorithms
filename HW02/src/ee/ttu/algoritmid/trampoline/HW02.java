@@ -46,7 +46,7 @@ public class HW02 implements TrampolineCenter {
 
             Trampoline[] neighbours = current.findNeighbours(map);
             for (Trampoline next: neighbours) {
-                if (next == null) {
+                if (next == null || next.getType().equals(Trampoline.Type.WALL)) {
                     continue;
                 }
                 int neighbourCost = -TrampolineData.calculateTrampolineFine(next);
@@ -87,17 +87,26 @@ public class HW02 implements TrampolineCenter {
         Trampoline eastNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "east", 0);
         Trampoline eastNeighbourPlus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", 1);
         Trampoline eastNeighbourMinus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", -1);
+        Trampoline southNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "south", 0);
+        Trampoline southNeighbourPlus1 = neighbourTrampoline.findTrampolineNeighbour(map, "south", 1);
+        Trampoline southNeighbourMinus1 = neighbourTrampoline.findTrampolineNeighbour(map, "south", -1);
         if (eastNeighbour != null && eastNeighbour.equals(trampoline)) {
             int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast();
             return new int[] {x + neighbourJumpForceEast, y};
-        } if (eastNeighbourPlus1 != null && eastNeighbourPlus1.equals(trampoline)) {
+        } else if (eastNeighbourPlus1 != null && eastNeighbourPlus1.equals(trampoline)) {
             int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast() + 1;
             return new int[] {x + neighbourJumpForceEast, y};
-        } if (eastNeighbourMinus1 != null && eastNeighbourMinus1.equals(trampoline)) {
+        } else if (eastNeighbourMinus1 != null && eastNeighbourMinus1.equals(trampoline)) {
             int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast() - 1;
             return new int[] {x + neighbourJumpForceEast, y};
-        } else {
+        } else if (southNeighbour != null && southNeighbour.equals(trampoline)) {
             int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth();
+            return new int[] {x, y + neighbourJumpForceSouth};
+        } else if (southNeighbourPlus1 != null && southNeighbourPlus1.equals(trampoline)) {
+            int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth() + 1;
+            return new int[] {x, y + neighbourJumpForceSouth};
+        } else {
+            int neighbourJumpForceSouth = neighbourTrampoline.getJumpForceSouth() - 1;
             return new int[] {x, y + neighbourJumpForceSouth};
         }
     }

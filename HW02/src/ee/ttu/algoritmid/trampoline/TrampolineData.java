@@ -65,7 +65,7 @@ public class TrampolineData {
         neighbours[3] = southNeighbourPlus1;
         neighbours[4] = eastNeighbourMinus1;
         neighbours[5] = southNeighbourMinus1;
-        return fixNeighboursArray(neighbours);
+        return neighbours;
     }
 
     public Trampoline findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
