@@ -12,15 +12,13 @@ public class HW02 implements TrampolineCenter {
         HashMap<TrampolineData, TrampolineData> cameFrom = new HashMap<>();
         HashMap<Trampoline, Integer> costSoFar = new HashMap<>();
 
-        // Poolik.
+        // Poolik. Täpsustused kirjutada ja 1 ja -1.
         PriorityQueue<TrampolineData> frontier = new PriorityQueue<>((o1, o2) -> {
-            if (o1.getTrampoline().getType().equals(Trampoline.Type.WITH_FINE)) {
+            if (o1.getTrampoline().getType().equals(Trampoline.Type.WITH_FINE)
+                    || (costSoFar.get(o1.getTrampoline()) > costSoFar.get(o2.getTrampoline()))) {
                 return 1;
-            } else if (o2.getTrampoline().getType().equals(Trampoline.Type.WITH_FINE)) {
-                return -1;
-            } else if (costSoFar.get(o1.getTrampoline()) > costSoFar.get(o2.getTrampoline())) {
-                return 1;
-            } else if (costSoFar.get(o2.getTrampoline()) > costSoFar.get(o1.getTrampoline())) {
+            } else if (o2.getTrampoline().getType().equals(Trampoline.Type.WITH_FINE)
+                    || (costSoFar.get(o2.getTrampoline()) > costSoFar.get(o1.getTrampoline()))) {
                 return -1;
             }
             return 0;
@@ -46,9 +44,11 @@ public class HW02 implements TrampolineCenter {
 
             Trampoline[] neighbours = current.findNeighbours(map);
             for (Trampoline next: neighbours) {
+                // Ainult Wall.
                 if (next == null || next.getType().equals(Trampoline.Type.WALL)) {
                     continue;
                 }
+                // Täpsustada.
                 int neighbourCost = -TrampolineData.calculateTrampolineFine(next);
                 int newCost = costSoFar.get(current.getTrampoline()) + neighbourCost + 1;
                 if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
@@ -61,8 +61,7 @@ public class HW02 implements TrampolineCenter {
             }
         }
 
-        // Valmis.
-        // Reconstruct the path.
+        // Reconstruct the path. Täpsustused
         List<TrampolineData> path = new ArrayList<>();
         while (!current.equals(NWTrampolineData)) {
             path.add(current);
@@ -80,7 +79,7 @@ public class HW02 implements TrampolineCenter {
         return new int[] {x, y};
     }
 
-    // Poolik
+    // Poolik. Täpsustused. Lisada naabrid kohe listi.
     private int[] findTrampolineCoordinates(Trampoline[][] map, Trampoline trampoline, TrampolineData neighbourTrampoline) {
         int x = neighbourTrampoline.getX();
         int y = neighbourTrampoline.getY();
@@ -89,7 +88,6 @@ public class HW02 implements TrampolineCenter {
         Trampoline eastNeighbourMinus1 = neighbourTrampoline.findTrampolineNeighbour(map, "east", -1);
         Trampoline southNeighbour = neighbourTrampoline.findTrampolineNeighbour(map, "south", 0);
         Trampoline southNeighbourPlus1 = neighbourTrampoline.findTrampolineNeighbour(map, "south", 1);
-        Trampoline southNeighbourMinus1 = neighbourTrampoline.findTrampolineNeighbour(map, "south", -1);
         if (eastNeighbour != null && eastNeighbour.equals(trampoline)) {
             int neighbourJumpForceEast = neighbourTrampoline.getJumpForceEast();
             return new int[] {x + neighbourJumpForceEast, y};
@@ -111,11 +109,12 @@ public class HW02 implements TrampolineCenter {
         }
     }
 
+    // Täpsustused.
     private int calculateJumpForce(int coordinate, int nextCoordinate) {
         return nextCoordinate - coordinate;
     }
 
-    // Valmis.
+    // Täpsustused.
     private Result convertPathToResult(List<TrampolineData> path, Trampoline[][] map) {
         List<String> pathString = new ArrayList<>();
         int totalFine = 0;
