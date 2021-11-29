@@ -66,7 +66,6 @@ public class HW02 implements TrampolineCenter {
             current = cameFrom.get(current);
         }
         path.add(NWTrampolineData);
-        Collections.reverse(path);
 
         return convertPathToResult(path, map);
     }
@@ -96,12 +95,12 @@ public class HW02 implements TrampolineCenter {
     private Result convertPathToResult(List<TrampolineData> path, Trampoline[][] map) {
         List<String> pathString = new ArrayList<>();
         int totalFine = 0;
-        for (int i = 0; i < path.size() - 1; i++) {
+        for (int i = path.size() - 1; i > 0; i--) {
 
             TrampolineData trampolineData = path.get(i);
             int[] coordinates = trampolineData.getCoordinates();
             int jumpForce;
-            int[] nextCoordinates = path.get(i + 1).getCoordinates();
+            int[] nextCoordinates = path.get(i - 1).getCoordinates();
 
             totalFine += trampolineData.getFine();
 
