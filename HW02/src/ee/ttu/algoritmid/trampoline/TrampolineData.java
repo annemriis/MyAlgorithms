@@ -76,14 +76,14 @@ public class TrampolineData {
             // Pooleli
             jumpForce = fixTrampolineJumpForceEast(map);
             int neighbourX = x + jumpForce + extraForce;
-            if (neighbourX <= mapWidth) {  // Find neighbour from east.
+            if (neighbourX <= mapWidth && neighbourX >= 0) {  // Find neighbour from east.
                 return map[y][neighbourX];
             }
         } else if (quarter.equals("south")) {
             // Pooleli
             jumpForce = fixTrampolineJumpForceSouth(map);
             int neighbourY = y + jumpForce + extraForce;
-            if (neighbourY <= mapLength) {  // Find neighbour from south.
+            if (neighbourY <= mapLength && neighbourY >= 0) {  // Find neighbour from south.
                 return map[neighbourY][x];
             }
         }
