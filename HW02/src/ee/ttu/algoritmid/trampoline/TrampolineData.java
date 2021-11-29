@@ -8,13 +8,12 @@ public class TrampolineData {
     private int y;
     private int jumpForceEast = Integer.MIN_VALUE;
     private int jumpForceSouth = Integer.MIN_VALUE;
-    private int fine;
+    private int fine = Integer.MAX_VALUE;
     private TrampolineData[] neighbours;
 
     // Poolik.
     public TrampolineData(Trampoline trampoline) {
         this.trampoline = trampoline;
-        this.fine = calculateTrampolineFine(trampoline);
     }
 
     public Trampoline getTrampoline() {
@@ -53,6 +52,9 @@ public class TrampolineData {
     }
 
     public int getFine() {
+        if (fine == Integer.MAX_VALUE) {
+            fine = calculateTrampolineFine(trampoline);
+        }
         return fine;
     }
 
@@ -112,7 +114,7 @@ public class TrampolineData {
     }
 
     // Valmis.
-    public static int calculateTrampolineFine(Trampoline trampoline) {
+    public int calculateTrampolineFine(Trampoline trampoline) {
         Trampoline.Type type = trampoline.getType();
         if (type.equals(Trampoline.Type.WITH_FINE)) {
             return trampoline.getJumpForce();

@@ -53,7 +53,7 @@ public class HW02 implements TrampolineCenter {
                     continue;
                 }
                 // Täpsustada.
-                int neighbourCost = -TrampolineData.calculateTrampolineFine(next.getTrampoline());
+                int neighbourCost = next.getFine();
                 int newCost = costSoFar.get(current) + neighbourCost + 1;
                 if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
                     costSoFar.put(next, newCost);
