@@ -10,7 +10,7 @@ public class HW02 implements TrampolineCenter {
         int[] currentCoordinates;
         int[] finishCoordinates = findFinishCoordinates(map);
         HashMap<TrampolineData, TrampolineData> cameFrom = new HashMap<>();
-        HashMap<TrampolineData, Integer> costSoFar = new HashMap<>();
+        HashMap<Trampoline, Integer> costSoFar = new HashMap<>();
 
         PriorityQueue<TrampolineData> frontier = new PriorityQueue<>((o1, o2) -> {
 
@@ -21,9 +21,9 @@ public class HW02 implements TrampolineCenter {
                 return -1;
 
             // If not then check if trampoline has a larger cost so far.
-            } else if (costSoFar.get(o1) > costSoFar.get(o2)) {
+            } else if (costSoFar.get(o1.getTrampoline()) > costSoFar.get(o2.getTrampoline())) {
                 return 1;
-            } else if ((costSoFar.get(o2) > costSoFar.get(o1))) {
+            } else if ((costSoFar.get(o2.getTrampoline()) > costSoFar.get(o1.getTrampoline()))) {
                 return -1;
             }
             return 0;
@@ -34,7 +34,7 @@ public class HW02 implements TrampolineCenter {
         TrampolineData current = NWTrampolineData;
         // Add start.
         cameFrom.put(NWTrampolineData, null);
-        costSoFar.put(NWTrampolineData, 0);
+        costSoFar.put(NWTrampoline, 0);
         frontier.add(NWTrampolineData);  // Add start to the queue.
 
         // Find path.
@@ -46,18 +46,22 @@ public class HW02 implements TrampolineCenter {
                 break;
             }
 
-            TrampolineData[] neighbours = current.getNeighbours(map);
-            for (TrampolineData next: neighbours) {
-                if (next == null || next.getTrampoline().getType().equals(Trampoline.Type.WALL)) {
+            Map<Trampoline, Integer[]> neighbours = current.getNeighbours(map);
+            for (Map.Entry<Trampoline, Integer[]> nextEntry: neighbours.entrySet()) {
+                Trampoline next = nextEntry.getKey();
+                Integer[] coordinates = nextEntry.getValue();
+                if (next == null || next.getType().equals(Trampoline.Type.WALL)) {
                     continue;
                 }
                 // Täpsustada.
-                int neighbourCost = next.getFine();
-                int newCost = costSoFar.get(current) + neighbourCost + 1;
+                int neighbourCost = -TrampolineData.calculateTrampolineFine(next);
+                int newCost = costSoFar.get(current.getTrampoline()) + neighbourCost + 1;
                 if (!costSoFar.containsKey(next) || newCost < costSoFar.get(next)) {
+                    TrampolineData nextTrampolineData = new TrampolineData(next, coordinates[0], coordinates[1]);
+
                     costSoFar.put(next, newCost);
-                    cameFrom.put(next, current);
-                    frontier.add(next);
+                    cameFrom.put(nextTrampolineData, current);
+                    frontier.add(nextTrampolineData);
                 }
             }
         }
