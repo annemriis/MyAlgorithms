@@ -4,6 +4,12 @@ import java.util.*;
 
 public class HW02 implements TrampolineCenter {
 
+    /**
+     * Find path from start to finish with Dijkstra algorithm.
+     *
+     * @param map with Trampolines.
+     * @return Result with path from start to finish and total fine.
+     */
     @Override
     public Result play(Trampoline[][] map) {
         Trampoline NWTrampoline = map[0][0];
@@ -43,16 +49,17 @@ public class HW02 implements TrampolineCenter {
             current = frontier.poll();
             currentCoordinates = current.getCoordinates();
 
-            if (Arrays.equals(currentCoordinates, finishCoordinates)) {
+            if (Arrays.equals(currentCoordinates, finishCoordinates)) {  // If path from start to finish is found.
                 break;
             }
 
+            // Check all current trampoline neighbours.
             TrampolineData[] neighbours = current.getNeighbours(map);
             for (TrampolineData next: neighbours) {
                 if (next == null || next.getTrampoline().getType().equals(Trampoline.Type.WALL)) {
                     continue;
                 }
-                // Täpsustada.
+
                 Trampoline nextTrampoline = next.getTrampoline();
                 int neighbourCost = -next.getFine();
                 int newCost = costSoFar.get(current.getTrampoline()) + neighbourCost + 1;
@@ -118,10 +125,12 @@ public class HW02 implements TrampolineCenter {
 
             totalFine += trampolineData.getFine();
 
-            if (nextCoordinates[0] > coordinates[0]) {  // If next is to the right from current, then next is in the east.
+            // If next is to the right from current, then next is in the east.
+            if (nextCoordinates[0] > coordinates[0]) {
                 int jumpForce = calculateJumpForce(coordinates[0], nextCoordinates[0]);
                 pathString.add("E" + jumpForce);
-            } else if (nextCoordinates[1] > coordinates[1]) {  // If next is to the left from current, then next is in the south.
+            // If next is to the left from current, then next is in the south.
+            } else if (nextCoordinates[1] > coordinates[1]) {
                 int jumpForce = calculateJumpForce(coordinates[1], nextCoordinates[1]);
                 pathString.add("S" + jumpForce);
             }

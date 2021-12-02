@@ -2,7 +2,6 @@ package ee.ttu.algoritmid.trampoline;
 
 public class TrampolineData {
 
-    // Poolik.
     private Trampoline trampoline;
     private int x;
     private int y;
@@ -11,21 +10,12 @@ public class TrampolineData {
     private int fine = Integer.MIN_VALUE;
     private TrampolineData[] neighbours;
 
-    // Poolik.
     public TrampolineData(Trampoline trampoline) {
         this.trampoline = trampoline;
     }
 
     public Trampoline getTrampoline() {
         return trampoline;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public void setCoordinates(int x, int y) {
@@ -52,7 +42,7 @@ public class TrampolineData {
     }
 
     public int getFine() {
-        if (fine == Integer.MIN_VALUE) {
+        if (fine == Integer.MIN_VALUE) {  // Calculate fine if it has not been calculated.
             fine = calculateTrampolineFine(trampoline);
         }
         return fine;
@@ -65,7 +55,12 @@ public class TrampolineData {
         return neighbours;
     }
 
-    // Valmis? Poolik.
+    /**
+     * Find trampoline neighbours.
+     *
+     * @param map with trampolines
+     * @return array with trampoline neighbours
+     */
     public TrampolineData[] findNeighbours(Trampoline[][] map) {
         neighbours = new TrampolineData[6];
         // Find east neighbours.
@@ -86,7 +81,14 @@ public class TrampolineData {
         return neighbours;
     }
 
-    // Täpsustused.
+    /**
+     * Find one neighbour from given quarter.
+     *
+     * @param map with trampolines
+     * @param quarter where to look for a neighbour (east or south)
+     * @param extraForce for the jump (1, 0, -1)
+     * @return neighbour's TrampolineData instance
+     */
     public TrampolineData findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
         TrampolineData trampolineData;
         Trampoline trampoline;
@@ -115,14 +117,26 @@ public class TrampolineData {
         return null;
     }
 
-    // Valmis.
+    /**
+     * Create a new TrampolineData instance with given data.
+     *
+     * @param x coordinate of the trampoline
+     * @param y coordinate of the trampoline
+     * @param trampoline instance
+     * @return TrampolineData instance with trampoline and coordinates
+     */
     private TrampolineData createTrampolineData(int x, int y, Trampoline trampoline) {
         TrampolineData trampolineData = new TrampolineData(trampoline);
         trampolineData.setCoordinates(x, y);
         return trampolineData;
     }
 
-    // Valmis.
+    /**
+     * Calculate trampoline's fine.
+     *
+     * @param trampoline instance
+     * @return trampoline's fine
+     */
     public int calculateTrampolineFine(Trampoline trampoline) {
         Trampoline.Type type = trampoline.getType();
         if (type.equals(Trampoline.Type.WITH_FINE)) {
@@ -161,7 +175,14 @@ public class TrampolineData {
         return jumpForce;
     }
 
-    // Valmis.
+    /**
+     * Check if trampoline is a wall.
+     *
+     * @param map with trampolines
+     * @param x coordinate of the trampoline
+     * @param y coordinate of the trampoline
+     * @return true if trampoline is a wall, false otherwise
+     */
     private boolean isWall(Trampoline[][] map, Integer x, Integer y) {
         return map[y][x].getType().equals(Trampoline.Type.WALL);
     }
