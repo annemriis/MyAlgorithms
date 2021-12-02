@@ -8,7 +8,7 @@ public class TrampolineData {
     private int y;
     private int jumpForceEast = Integer.MIN_VALUE;
     private int jumpForceSouth = Integer.MIN_VALUE;
-    private int fine;
+    private int fine = Integer.MIN_VALUE;
     private TrampolineData[] neighbours;
 
     // Poolik.
