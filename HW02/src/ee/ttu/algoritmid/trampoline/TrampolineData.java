@@ -9,14 +9,11 @@ public class TrampolineData {
     private int jumpForceEast = Integer.MIN_VALUE;
     private int jumpForceSouth = Integer.MIN_VALUE;
     private int fine;
-    private Trampoline[] neighbours;
+    private TrampolineData[] neighbours;
 
     // Poolik.
-    public TrampolineData(Trampoline trampoline, int x, int y, Trampoline[][] map) {
+    public TrampolineData(Trampoline trampoline) {
         this.trampoline = trampoline;
-        this.x = x;
-        this.y = y;
-        this.fine = calculateTrampolineFine(trampoline);
     }
 
     public Trampoline getTrampoline() {
@@ -29,6 +26,11 @@ public class TrampolineData {
 
     public int getY() {
         return y;
+    }
+
+    public void setCoordinates(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public int[] getCoordinates() {
@@ -50,10 +52,13 @@ public class TrampolineData {
     }
 
     public int getFine() {
+        if (fine == Integer.MIN_VALUE) {
+            fine = calculateTrampolineFine(trampoline);
+        }
         return fine;
     }
 
-    public Trampoline[] getNeighbours(Trampoline[][] map) {
+    public TrampolineData[] getNeighbours(Trampoline[][] map) {
         if (neighbours == null) {
             neighbours = findNeighbours(map);
         }
@@ -61,17 +66,17 @@ public class TrampolineData {
     }
 
     // Valmis? Poolik.
-    public Trampoline[] findNeighbours(Trampoline[][] map) {
-        neighbours = new Trampoline[6];
+    public TrampolineData[] findNeighbours(Trampoline[][] map) {
+        neighbours = new TrampolineData[6];
         // Find east neighbours.
-        Trampoline eastNeighbour = findTrampolineNeighbour(map, "east", 0);
+        TrampolineData eastNeighbour = findTrampolineNeighbour(map, "east", 0);
         // Find neighbours for +- version.
-        Trampoline eastNeighbourPlus1 = findTrampolineNeighbour(map, "east", 1);
-        Trampoline eastNeighbourMinus1 = findTrampolineNeighbour(map, "east", -1);
+        TrampolineData eastNeighbourPlus1 = findTrampolineNeighbour(map, "east", 1);
+        TrampolineData eastNeighbourMinus1 = findTrampolineNeighbour(map, "east", -1);
         // Find south neighbours.
-        Trampoline southNeighbour = findTrampolineNeighbour(map, "south", 0);
-        Trampoline southNeighbourPlus1 = findTrampolineNeighbour(map, "south", 1);
-        Trampoline southNeighbourMinus1 = findTrampolineNeighbour(map, "south", -1);
+        TrampolineData southNeighbour = findTrampolineNeighbour(map, "south", 0);
+        TrampolineData southNeighbourPlus1 = findTrampolineNeighbour(map, "south", 1);
+        TrampolineData southNeighbourMinus1 = findTrampolineNeighbour(map, "south", -1);
         neighbours[0] = eastNeighbour;
         neighbours[1] = southNeighbour;
         neighbours[2] = eastNeighbourPlus1;
@@ -82,7 +87,9 @@ public class TrampolineData {
     }
 
     // Täpsustused.
-    public Trampoline findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
+    public TrampolineData findTrampolineNeighbour(Trampoline[][] map, String quarter, int extraForce) {
+        TrampolineData trampolineData;
+        Trampoline trampoline;
         int mapLength = map.length - 1;
         int mapWidth = map[0].length - 1;
 
@@ -90,20 +97,33 @@ public class TrampolineData {
             int jumpForce = getJumpForceEast(map);
             int neighbourX = x + jumpForce + extraForce;
             if (neighbourX <= mapWidth && neighbourX >= 0) {  // Find neighbour from the east.
-                return map[y][neighbourX];
+                // Create new TrampolineData instance with Trampoline and coordinates.
+                trampoline = map[y][neighbourX];
+                trampolineData = createTrampolineData(neighbourX, y, trampoline);
+                return trampolineData;
             }
         } else if (quarter.equals("south")) {
             int jumpForce = getJumpForceSouth(map);
             int neighbourY = y + jumpForce + extraForce;
             if (neighbourY <= mapLength && neighbourY >= 0) {  // Find neighbour from the south.
-                return map[neighbourY][x];
+                // Create new TrampolineData instance with Trampoline and coordinates.
+                trampoline = map[neighbourY][x];
+                trampolineData = createTrampolineData(x, neighbourY, trampoline);
+                return trampolineData;
             }
         }
         return null;
     }
 
     // Valmis.
-    public static int calculateTrampolineFine(Trampoline trampoline) {
+    private TrampolineData createTrampolineData(int x, int y, Trampoline trampoline) {
+        TrampolineData trampolineData = new TrampolineData(trampoline);
+        trampolineData.setCoordinates(x, y);
+        return trampolineData;
+    }
+
+    // Valmis.
+    public int calculateTrampolineFine(Trampoline trampoline) {
         Trampoline.Type type = trampoline.getType();
         if (type.equals(Trampoline.Type.WITH_FINE)) {
             return trampoline.getJumpForce();
