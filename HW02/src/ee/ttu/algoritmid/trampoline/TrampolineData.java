@@ -145,7 +145,12 @@ public class TrampolineData {
         return 0;
     }
 
-    // Poolik. midagi peaks tegema for-loopiga.
+    /**
+     * Fix trampoline's east jump force if wall is detected.
+     *
+     * @param map with trampolines
+     * @return fixed east jump force
+     */
     private int fixTrampolineJumpForceEast(Trampoline[][] map) {
         int mapWidth = map[0].length;
         int jumpForce = trampoline.getJumpForce();
@@ -160,7 +165,12 @@ public class TrampolineData {
         return jumpForce;
     }
 
-    // Poolik. Midagi peaks tegema for-loopiga.
+    /**
+     * Fix trampoline's south jump force if wall is detected.
+     *
+     * @param map with trampolines
+     * @return fixed south jump force
+     */
     private int fixTrampolineJumpForceSouth(Trampoline[][] map) {
         int mapLength = map.length;
         int jumpForce = trampoline.getJumpForce();
