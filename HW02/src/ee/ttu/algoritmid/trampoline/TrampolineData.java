@@ -58,6 +58,7 @@ public class TrampolineData {
     /**
      * Find trampoline neighbours.
      *
+     * Trampoline neighbours are trampolines where can be jumped from the given trampoline.
      * @param map with trampolines
      * @return array with trampoline neighbours
      */

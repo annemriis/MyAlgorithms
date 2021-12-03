@@ -61,7 +61,9 @@ public class HW02 implements TrampolineCenter {
                 }
 
                 Trampoline nextTrampoline = next.getTrampoline();
-                int neighbourCost = -next.getFine();
+                // Calculate the cost for moving from current trampoline to neighbour.
+                int neighbourCost = next.getFine();
+                // newCost is current trampoline's movement cost + neighbour's fine + 1 (for moving to neighbour).
                 int newCost = costSoFar.get(current.getTrampoline()) + neighbourCost + 1;
                 if (!costSoFar.containsKey(nextTrampoline) || newCost < costSoFar.get(nextTrampoline)) {
                     costSoFar.put(nextTrampoline, newCost);
